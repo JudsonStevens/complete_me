@@ -18,6 +18,14 @@ class CompleteMeTest < Minitest::Test
     assert_equal 1, cm.count
   end
 
+  def test_word_flag_starts_false
+
+  end 
+
+  def test_word_flag_can_be_set_to_true
+
+  end
+
   def test_inserts_multiple_words
     cm.populate("pizza\ndog\ncat")
     assert_equal 3, cm.count
@@ -74,7 +82,7 @@ class CompleteMeTest < Minitest::Test
 
   def test_search_checks_each_node_for_child_node_with_letter
 
-  end 
+  end
 
   #METHODS
   def insert_words(words)
