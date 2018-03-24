@@ -36,8 +36,10 @@ class CompleteMeTest < MiniTest::Test
     @c.insert("newer")
     @c.insert("branch")
     @c.insert("bran")
+    @c.insert("new")
+    @c.insert("fruit")
     actual = @c.count
-    expected = 3
+    expected = 5
     assert_equal expected, actual
   end
 

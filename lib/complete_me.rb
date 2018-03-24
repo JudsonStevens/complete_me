@@ -73,23 +73,20 @@ class CompleteMe
 
     #   }
     # end
-    if node.child_nodes != {}.empty?
+    if node.child_nodes.empty? == false
       node.child_nodes.each_key { |key| 
         @count += 1 if node.word_flag == true
-        node = node.child_nodes[key]
-        count(node)
         }
-    else
-      require 'pry'; binding.pry 
-      return @count
     end
-    require 'pry'; binding.pry
-
+    # require 'pry'; binding.pry
+    return @count
   end
 end
 
-x = CompleteMe.new
-x.insert("newer")
-x.insert("branch")
-x.insert("bran")
-x.count
+# x = CompleteMe.new
+# x.insert("newer")
+# x.insert("branch")
+# x.insert("bran")
+# x.insert("new")
+# x.insert("fruit")
+# x.count
