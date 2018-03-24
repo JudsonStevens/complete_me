@@ -2,11 +2,13 @@ require_relative 'node'
 
 class CompleteMe
   attr_accessor :root_node,
-                :count
+                :count,
+                :final_word_suggestions
 
   def initialize
     @root_node = Node.new
     @count = 0
+    @final_word_suggestions
   end
 
   def insert(word)
@@ -14,7 +16,7 @@ class CompleteMe
     #Take each letter of the input word and ask if the node before has the same
     #letter as a key already. If not, start a new node. If it does, then set the 
     #final node value equal to the last letter.
-    word.each_char do |letter|
+    word.each_char.map do |letter|
       if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
       end
@@ -66,7 +68,34 @@ class CompleteMe
     strings.split("\n").each { |word| insert(word)}
   end
   
-  def suggest
+  #To suggest, we need to first find the node at the end of the prefix given. 
+  #After that, we need to find all words that use that prefix and have a valid
+  #word_flag to signify they are a word.
+  def suggest(prefix)
+    node = @root_node
+    prefix.each_char do |letter|
+      if node.child_nodes.has_key?(letter) == true
+        node = node.child_nodes(letter)
+      end
+    end
+    all_words(node, prefix)
+    return @final_word_suggestions
   end
-  
+
+  #This method takes the node from the original suggest method and then finds
+  #the nodes with the word_flag set to true, returning the characters it used
+  #to get to that node as a valid word suggestion.
+  def all_words(node, prefix)
+    node.child_nodes.each_key do |letter|
+      if node.child_nodes.have_key?(letter)
+        new_prefix = prefix += letter
+        node = node.child_nodes[letter]
+        if node.word_flag == true
+          final_word_suggestions << new_prefix
+        end
+        all_words(node, new_prefix)
+      end
+    end
+    return final_word_suggestions
+  end
 end
