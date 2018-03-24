@@ -42,8 +42,12 @@ class CompleteMe
       end
     end
     #Probably unneccesary, but it returns true if the word is contained in the trie.
-    if new_word == word
+    if new_word == word && node.word_flag == true
+      final_node = node.word_flag
+      return final_node
+    elsif new_word == word && node.word_flag != true
+      node.word_flag = true
       return true
-    end  
+    end 
   end
 end
