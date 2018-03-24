@@ -66,6 +66,8 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, @cm.populate(strings)
   end
 
+  
+
   #METHODS
   def insert_words(words)
     cm.populate(words.join("\n"))
