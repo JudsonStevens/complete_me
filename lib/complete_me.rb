@@ -1,10 +1,12 @@
 require_relative 'node'
 
 class CompleteMe
-  attr_accessor :root_node
+  attr_accessor :root_node,
+                :count
 
   def initialize
     @root_node = Node.new
+    @count = 0
   end
 
   def insert(word)
@@ -21,6 +23,7 @@ class CompleteMe
     #Word flag should change at the end of the method to signify an entire word
     #has been input.
     node.word_flag = true
+    @count += 1
   end
 
   def search(word, node = @root_node)
@@ -49,5 +52,11 @@ class CompleteMe
       node.word_flag = true
       return true
     end 
+  end
+
+  def count
+    #Most efficient way to count is to count insertions and lower the count on deletions.
+    #This method will return the count.
+    return @count
   end
 end
