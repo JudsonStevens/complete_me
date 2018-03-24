@@ -42,6 +42,7 @@ class CompleteMeTest < MiniTest::Test
     root_node = @c.root_node
     assert root_node.child_nodes.has_key?("e")
     assert root_node.child_nodes.has_key?("x")
+    assert node.word_flag
   end
 
   def test_it_can_remove_a_node_with_no_children
