@@ -5,3 +5,4 @@ gem 'minitest'
 gem 'minitest-emoji'
 gem 'pry'
 gem 'simplecov', require: false, group: :test
+gem 'minitest-emoji'

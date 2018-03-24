@@ -61,7 +61,12 @@ class CompleteMe
   end
 
   def populate(strings)
+    #The definition list in the local computer is divided by \n, allowing
+    #it to be split into seperate words and then inserted.
     strings.split("\n").each { |word| insert(word)}
+  end
+  
+  def suggest
   end
   
 end
