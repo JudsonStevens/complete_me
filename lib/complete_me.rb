@@ -50,4 +50,15 @@ class CompleteMe
       return true
     end 
   end
+
+  def count
+    #Need to count all the words in the tree. This should be doable by traversing the tree
+    #and counting up all word_flag = true nodes in the tree. We need to traverse each node
+    #of each child starting from the root. Could we possible just check to see if the child
+    #nodes contain the key word_flag == true? We would need some sort of enumerable to check
+    #each member of the child nodes hash. Possibly we could count as we insert, but would have
+    #to decrease the count on a deletion. 
+    count_array = @root_node.child_nodes.find_all { |key, hash| hash[word_flag] == true}
+    count_array.length
+  end
 end

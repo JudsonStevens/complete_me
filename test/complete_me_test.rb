@@ -33,7 +33,9 @@ class CompleteMeTest < MiniTest::Test
   end
 
   def test_it_can_count_all_words_in_tree
-  skip
+    @c.insert("newer")
+    actual = @c.count
+    expected = 1
   end
 
   def test_it_can_offer_suggestions
