@@ -63,7 +63,7 @@ class CompleteMeTest < Minitest::Test
   def test_populate_splits_string_at_new_line
     File.read("./test/medium.txt")
     expected =
-    assert_equal expected, actual
+    assert_equal expected, @cm.populate(strings)
   end
 
   #METHODS
