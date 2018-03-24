@@ -5,7 +5,7 @@ require_relative '../lib/complete_me'
 
 class NodeTest < MiniTest::Test
 
-  def setupd
+  def setup
     @n = Node.new
   end
 

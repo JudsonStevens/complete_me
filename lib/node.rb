@@ -1,4 +1,4 @@
-require_relative '../lib/complete_me'
+
 class Node
   attr_accessor :word_flag,
                 :children,
