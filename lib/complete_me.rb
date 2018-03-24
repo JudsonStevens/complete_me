@@ -54,7 +54,7 @@ class CompleteMe
     end 
   end
 
-  def count(node = @root_node)
+  def count
     #Most efficient way to count is to count insertions and lower the count on deletions.
     #This method will return the count.
     return @count
