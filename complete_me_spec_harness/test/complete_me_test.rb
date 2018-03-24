@@ -66,7 +66,13 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, @cm.populate(strings)
   end
 
-  
+  def test_suggest_returns_final_word_suggestions
+
+  end
+
+  def test_search_checks_each_node_for_child_node_with_letter
+
+  end 
 
   #METHODS
   def insert_words(words)
