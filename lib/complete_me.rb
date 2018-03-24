@@ -7,7 +7,7 @@ class CompleteMe
     @root_node = Node.new
   end
 
-  def insert_new_word(word)
+  def insert(word)
     node = @root_node
     #Take each letter of the input word and ask if the node before has the same
     #letter as a key already. If not, start a new node. If it does, then set the 
@@ -21,7 +21,6 @@ class CompleteMe
     #Word flag should change at the end of the method to signify an entire word
     #has been input.
     node.word_flag = true
-    
   end
 
 end

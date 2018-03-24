@@ -38,14 +38,18 @@ class CompleteMeTest < MiniTest::Test
   end
 
   def test_it_can_insert_words
-    #How to access the word flag at the last node?
-    @c.insert_new_word("newer")
+    @c.insert("newer")
     root_node = @c.root_node
-    # expected = root_node.child_nodes["r"]
     assert root_node.child_nodes.has_key?("n")
-    assert root_node.child_nodes.has_key?("w")
-    # assert_equal expected.word_flag, true
+    assert root_node.child_nodes["n"].child_nodes.has_key?("e")
   end
+
+  def test_the_word_flag_is_set_correctly_on_insert_on_last_character
+    @c.insert("newer")
+    root_node = @c.root_node
+    assert root_node.child_nodes["n"].child_nodes["e"].child_nodes["w"].child_nodes["e"].child_nodes["r"].word_flag
+  end
+
 
   def test_it_can_remove_a_node_with_no_children
   skip
