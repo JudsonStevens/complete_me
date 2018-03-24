@@ -23,19 +23,27 @@ class CompleteMe
     node.word_flag = true
   end
 
-  def search(word)
-    node = @root_node
+  def search(word, node = @root_node)
     #Starting at the root, we need an argument to be able to traverse. Traverse
     #and search are pretty much the same thing. Better to write that as one. Take 
     #in an argument and then strip it down and check each node to see if it has
     #a child node containing that letter. Each child node with the letter should be 
     #checked for the word flag, and then checked against the original word if the flag
-    #is set to true.
-    word.each_char do |letter|
+    #is set to true. Do we need an array to hold the characters as they are checked,
+    #to then be displayed at the end to confirm the word exists? Or just return true,
+    #that the search was successful.
+    #Ended up not needing to check to see if the word flag is true, as it just needs
+    #to find out whether or not the word is contained in the keys of the child nodes.
+    new_word = word.each_char do |letter|
       if node.child_nodes.has_key?(letter) == true
-        node.child_nodes[letter] = node
-      elsif node.child_nodes.has_key?
-    
+        node = node.child_nodes[letter]
+      elsif node.child_nodes.has_key? == false
+        return false
+      end
+    end
+    #Probably unneccesary, but it returns true if the word is contained in the trie.
+    if new_word == word
+      return true
+    end  
   end
-
 end

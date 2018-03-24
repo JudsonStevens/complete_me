@@ -18,7 +18,8 @@ class CompleteMeTest < MiniTest::Test
   end
   
   def test_it_can_search_the_tree
-    expected = "newer"
+    @c.insert("newer")
+    expected = true
     actual = @c.search("newer")
     
     assert_equal expected, actual
