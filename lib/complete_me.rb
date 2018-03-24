@@ -86,19 +86,27 @@ class CompleteMe
   #to get to that node as a valid word suggestion.
   def all_words(node, prefix, final_word_suggestions)
     if node.word_flag == true
-      final_word_suggestions << prefix 
-      final_word_suggestions = final_word_suggestions.uniq
+      final_word_suggestion_intake(prefix, final_word_suggestions)
     end
     if node.child_nodes.empty? == false
-      node.child_nodes.keys.each do |letter|
-        if node.child_nodes.has_key?(letter)
-          new_prefix = prefix
-          new_prefix += letter
-          next_node = node.child_nodes[letter]
-          all_words(next_node, new_prefix, final_word_suggestions)
-        end
-      end
+      suggestion_search(node, prefix, final_word_suggestions)
     end
     return final_word_suggestions
+  end
+
+  def suggestion_search(node, prefix, final_word_suggestions)
+    node.child_nodes.keys.each do |letter|
+      if node.child_nodes.has_key?(letter)
+        new_prefix = prefix
+        new_prefix += letter
+        next_node = node.child_nodes[letter]
+        all_words(next_node, new_prefix, final_word_suggestions)
+      end
+    end
+  end
+
+  def final_word_suggestion_intake(prefix, final_word_suggestions)
+    final_word_suggestions << prefix 
+    final_word_suggestions = final_word_suggestions.uniq
   end
 end
