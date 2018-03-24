@@ -34,8 +34,11 @@ class CompleteMeTest < MiniTest::Test
 
   def test_it_can_count_all_words_in_tree
     @c.insert("newer")
+    @c.insert("branch")
+    @c.insert("bran")
     actual = @c.count
-    expected = 1
+    expected = 3
+    assert expected, actual
   end
 
   def test_it_can_offer_suggestions
