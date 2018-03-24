@@ -7,7 +7,7 @@ class Node
   def initialize
     @word_flag = false
     @child_nodes = {}
-    @weight = {}
+    @weight = 0
   end
   
 end

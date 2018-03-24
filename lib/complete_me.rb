@@ -43,13 +43,8 @@ class CompleteMe
         return false
       end
     end
-    #Probably unneccesary, but it returns true if the word is contained in the trie.
     if new_word == word && node.word_flag == true
-      final_node = node.word_flag
-      return final_node
-    elsif new_word == word && node.word_flag != true
-      node.word_flag = true
-      return true
+      return node
     end 
   end
 
@@ -82,29 +77,36 @@ class CompleteMe
   #This method takes the node from the original suggest method and then finds
   #the nodes with the word_flag set to true, returning the characters it used
   #to get to that node as a valid word suggestion.
-  def all_words(node, prefix, final_word_suggestions)
+  def all_words(node, substring, final_word_suggestions)
     if node.word_flag == true
-      final_word_suggestion_intake(prefix, final_word_suggestions)
+      final_word_suggestion_intake(substring, final_word_suggestions)
     end
     if node.child_nodes.empty? == false
-      suggestion_search(node, prefix, final_word_suggestions)
+      suggestion_search(node, substring, final_word_suggestions)
     end
     return final_word_suggestions
   end
 
-  def suggestion_search(node, prefix, final_word_suggestions)
+  def suggestion_search(node, substring, final_word_suggestions)
     node.child_nodes.each_key do |letter|
       if node.child_nodes.key?(letter)
-        new_prefix = prefix
-        new_prefix += letter
+        new_substring = substring
+        new_substring += letter
         next_node = node.child_nodes[letter]
-        all_words(next_node, new_prefix, final_word_suggestions)
+        all_words(next_node, new_substring, final_word_suggestions)
       end
     end
   end
 
-  def final_word_suggestion_intake(prefix, final_word_suggestions)
-    final_word_suggestions << prefix
+  def final_word_suggestion_intake(substring, final_word_suggestions)
+    final_word_suggestions << substring
     final_word_suggestions = final_word_suggestions.uniq
   end
+
+  def select(substring, suggestion)
+
+
+  end
+
+
 end
