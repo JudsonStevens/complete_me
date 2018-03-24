@@ -61,16 +61,17 @@ class CompleteMe
     #each member of the child nodes hash. Possibly we could count as we insert, but would have
     #to decrease the count on a deletion. 
     # require 'pry'; binding.pry
-    new_array = node.child_nodes.keys
-    new_array.each { |key| 
-    # require 'pry'; binding.pry
-      if node.child_nodes[key].word_flag == true
-        @count += 1
-      end
-      }
-
-    
-    # require 'pry'; binding.pry
+    # if node.word_flag = true
+    #   @count += 1
+    # end
+    if node.child_nodes.keys.length != 0
+      node.child_nodes.each_key { |key| 
+        @count += 1 if node.word_flag == true
+        node = node.child_nodes[key]
+        count(node)
+        }
+    end
+    require 'pry'; binding.pry
 
   end
 end
