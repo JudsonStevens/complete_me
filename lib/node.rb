@@ -6,6 +6,7 @@ class Node
     @children = {}
     @weight = {}
   end
+  
 end
 
 

@@ -2,6 +2,12 @@ require_relative 'node'
 
 class CompleteMe
 
-    def initialize
+  def initialize
+    @root_node = Node.new
+  end
 
-    end
+  def 
+  end
+end
+end
+
