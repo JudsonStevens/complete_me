@@ -60,6 +60,13 @@ class CompleteMeTest < Minitest::Test
     assert_equal "doggerelist", cm.suggest("doggerel").first
   end
 
+  def test_populate_splits_string_at_new_line
+    File.read("./test/medium.txt")
+    expected =
+    assert_equal expected, actual
+  end
+
+  #METHODS
   def insert_words(words)
     cm.populate(words.join("\n"))
   end
@@ -71,4 +78,5 @@ class CompleteMeTest < Minitest::Test
   def large_word_list
     File.read("/usr/share/dict/words")
   end
+
 end
