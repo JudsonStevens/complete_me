@@ -23,6 +23,7 @@ class CompleteMe
     #Word flag should change at the end of the method to signify an entire word
     #has been input.
     node.word_flag = true
+    @count += 1
   end
 
   def search(word, node = @root_node)
@@ -63,13 +64,24 @@ class CompleteMe
     # require 'pry'; binding.pry
     # if node.word_flag = true
     #   @count += 1
+    # else 
+    #   node.child_nodes.each_key { |key|
+    #     @count += 1 if node.child_nodes[key].word_flag == true
+    #     node = node.child_nodes[key]
+    #     count(node)
+        
+
+    #   }
     # end
-    if node.child_nodes.keys.length != 0
+    if node.child_nodes != {}.empty?
       node.child_nodes.each_key { |key| 
         @count += 1 if node.word_flag == true
         node = node.child_nodes[key]
         count(node)
         }
+    else
+      require 'pry'; binding.pry 
+      return @count
     end
     require 'pry'; binding.pry
 
