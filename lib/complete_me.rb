@@ -58,6 +58,8 @@ class CompleteMe
     #nodes contain the key word_flag == true? We would need some sort of enumerable to check
     #each member of the child nodes hash. Possibly we could count as we insert, but would have
     #to decrease the count on a deletion. 
+    #Running the statement below without an explicit enumerable I believe runs each. Not 
+    #sure, need to do more research.
     count = 0
     node.child_nodes { |key| 
       if node.child_nodes[key].word_flag == true
