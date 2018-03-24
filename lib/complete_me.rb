@@ -2,8 +2,7 @@ require_relative 'node'
 
 class CompleteMe
   attr_accessor :root_node,
-                :count
-      
+                :count  
 
   def initialize
     @root_node = Node.new
@@ -95,7 +94,7 @@ class CompleteMe
 
   def suggestion_search(node, prefix, final_word_suggestions)
     node.child_nodes.each_key do |letter|
-      if node.child_nodes.has_key?(letter)
+      if node.child_nodes.key?(letter)
         new_prefix = prefix
         new_prefix += letter
         next_node = node.child_nodes[letter]
@@ -105,7 +104,7 @@ class CompleteMe
   end
 
   def final_word_suggestion_intake(prefix, final_word_suggestions)
-    final_word_suggestions << prefix 
+    final_word_suggestions << prefix
     final_word_suggestions = final_word_suggestions.uniq
   end
 end
