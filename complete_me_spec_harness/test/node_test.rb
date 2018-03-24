@@ -17,9 +17,10 @@ class NodeTest < MiniTest::Test
     expected = {}
     assert_equal expected, @n.weight
   end
-  
+
   def test_it_holds_a_reference_to_another_node
-  skip
+  expected = {}
+  assert_equal expected, @n.child_nodes
   end
 
   def test_it_holds_the_correct_letter
@@ -27,7 +28,8 @@ class NodeTest < MiniTest::Test
   end
 
   def test_it_has_weight
-  skip
+  expected = {}
+  assert_equal expected, @n.weight 
   end
 
 
