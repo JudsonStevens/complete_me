@@ -38,11 +38,13 @@ class CompleteMeTest < MiniTest::Test
   end
 
   def test_it_can_insert_words
-    @c.insert_new_word("example")
+    #How to access the word flag at the last node?
+    @c.insert_new_word("newer")
     root_node = @c.root_node
-    assert root_node.child_nodes.has_key?("e")
-    assert root_node.child_nodes.has_key?("x")
-    assert node.word_flag
+    # expected = root_node.child_nodes["r"]
+    assert root_node.child_nodes.has_key?("n")
+    assert root_node.child_nodes.has_key?("w")
+    # assert_equal expected.word_flag, true
   end
 
   def test_it_can_remove_a_node_with_no_children
