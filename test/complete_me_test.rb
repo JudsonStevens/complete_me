@@ -17,8 +17,12 @@ class CompleteMeTest < MiniTest::Test
     assert_equal @c.root_node.weight, Node.new.weight
   end
   
-  def test_it_can_find_a_letter_node
-  skip
+  def test_it_can_search_the_tree
+    expected = "newer"
+    actual = @c.search("newer")
+    
+    assert_equal expected, actual
+
   end
 
   def test_it_can_find_a_word_flagged_node
