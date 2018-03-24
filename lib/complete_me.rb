@@ -3,12 +3,11 @@ require_relative 'node'
 class CompleteMe
   attr_accessor :root_node,
                 :count
-                # :final_word_suggestions
+      
 
   def initialize
     @root_node = Node.new
     @count = 0
-    # @final_word_suggestions = []
   end
 
   def insert(word, node = @root_node)
@@ -73,7 +72,7 @@ class CompleteMe
   def suggest(prefix, node = @root_node)
     final_word_suggestions = []
     prefix.each_char do |letter|
-      if node.child_nodes.has_key?(letter) == true
+      if node.child_nodes.key?(letter) == true
         node = node.child_nodes[letter]
       end
     end
@@ -95,7 +94,7 @@ class CompleteMe
   end
 
   def suggestion_search(node, prefix, final_word_suggestions)
-    node.child_nodes.keys.each do |letter|
+    node.child_nodes.each_key do |letter|
       if node.child_nodes.has_key?(letter)
         new_prefix = prefix
         new_prefix += letter
