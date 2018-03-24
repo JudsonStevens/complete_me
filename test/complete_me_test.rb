@@ -39,8 +39,9 @@ class CompleteMeTest < MiniTest::Test
 
   def test_it_can_insert_words
     @c.insert_new_word("example")
-    assert @root_node.child_nodes.has_key?("e")
-    assert @root_node.child_nodes.has_key?, "x"
+    root_node = @c.root_node
+    assert root_node.child_nodes.has_key?("e")
+    assert root_node.child_nodes.has_key?("x")
   end
 
   def test_it_can_remove_a_node_with_no_children
