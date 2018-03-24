@@ -3,18 +3,18 @@ require_relative 'node'
 class CompleteMe
   attr_accessor :root_node,
                 :count
+      
 
   def initialize
     @root_node = Node.new
     @count = 0
   end
 
-  def insert(word)
-    node = @root_node
+  def insert(word, node = @root_node)
     #Take each letter of the input word and ask if the node before has the same
     #letter as a key already. If not, start a new node. If it does, then set the 
     #final node value equal to the last letter.
-    word.each_char do |letter|
+    word.each_char.map do |letter|
       if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
       end
@@ -61,7 +61,51 @@ class CompleteMe
   end
 
   def populate(strings)
+    #The definition list in the local computer is divided by \n, allowing
+    #it to be split into seperate words and then inserted.
     strings.split("\n").each { |word| insert(word)}
   end
   
+  #To suggest, we need to first find the node at the end of the prefix given. 
+  #After that, we need to find all words that use that prefix and have a valid
+  #word_flag to signify they are a word.
+  def suggest(prefix, node = @root_node)
+    final_word_suggestions = []
+    prefix.each_char do |letter|
+      if node.child_nodes.key?(letter) == true
+        node = node.child_nodes[letter]
+      end
+    end
+    final_word_suggestions = all_words(node, prefix, final_word_suggestions)
+    return final_word_suggestions
+  end
+
+  #This method takes the node from the original suggest method and then finds
+  #the nodes with the word_flag set to true, returning the characters it used
+  #to get to that node as a valid word suggestion.
+  def all_words(node, prefix, final_word_suggestions)
+    if node.word_flag == true
+      final_word_suggestion_intake(prefix, final_word_suggestions)
+    end
+    if node.child_nodes.empty? == false
+      suggestion_search(node, prefix, final_word_suggestions)
+    end
+    return final_word_suggestions
+  end
+
+  def suggestion_search(node, prefix, final_word_suggestions)
+    node.child_nodes.each_key do |letter|
+      if node.child_nodes.has_key?(letter)
+        new_prefix = prefix
+        new_prefix += letter
+        next_node = node.child_nodes[letter]
+        all_words(next_node, new_prefix, final_word_suggestions)
+      end
+    end
+  end
+
+  def final_word_suggestion_intake(prefix, final_word_suggestions)
+    final_word_suggestions << prefix 
+    final_word_suggestions = final_word_suggestions.uniq
+  end
 end
