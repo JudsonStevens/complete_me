@@ -1,10 +1,12 @@
 require_relative 'node'
 
 class CompleteMe
-  attr_accessor :root_node
+  attr_accessor :root_node,
+                :count
 
   def initialize
     @root_node = Node.new
+    @count = 0
   end
 
   def insert(word)
@@ -58,13 +60,13 @@ class CompleteMe
     #nodes contain the key word_flag == true? We would need some sort of enumerable to check
     #each member of the child nodes hash. Possibly we could count as we insert, but would have
     #to decrease the count on a deletion. 
-    count = 0
     # require 'pry'; binding.pry
-    node.child_nodes { |key| 
+    node.child_nodes.each_key { |key| 
       if node.child_nodes[key].word_flag == true
-        count += 1
+        @count += 1
         # require 'pry'; binding.pry
       else
+        node = node.child_nodes[key]
         count(node)
         # require 'pry'; binding.pry
       end
@@ -74,3 +76,9 @@ class CompleteMe
     
   end
 end
+
+x = CompleteMe.new
+x.insert("newer")
+x.insert("branch")
+x.insert("bran")
+x.count
