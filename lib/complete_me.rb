@@ -59,4 +59,9 @@ class CompleteMe
     #This method will return the count.
     return @count
   end
+
+  def populate(strings)
+    strings.split("\n").each { |word| insert(word)}
+  end
+  
 end
