@@ -55,38 +55,8 @@ class CompleteMe
   end
 
   def count(node = @root_node)
-    #Need to count all the words in the tree. This should be doable by traversing the tree
-    #and counting up all word_flag = true nodes in the tree. We need to traverse each node
-    #of each child starting from the root. Could we possible just check to see if the child
-    #nodes contain the key word_flag == true? We would need some sort of enumerable to check
-    #each member of the child nodes hash. Possibly we could count as we insert, but would have
-    #to decrease the count on a deletion. 
-    # require 'pry'; binding.pry
-    # if node.word_flag = true
-    #   @count += 1
-    # else 
-    #   node.child_nodes.each_key { |key|
-    #     @count += 1 if node.child_nodes[key].word_flag == true
-    #     node = node.child_nodes[key]
-    #     count(node)
-        
-
-    #   }
-    # end
-    if node.child_nodes.empty? == false
-      node.child_nodes.each_key { |key| 
-        @count += 1 if node.word_flag == true
-        }
-    end
-    # require 'pry'; binding.pry
+    #Most efficient way to count is to count insertions and lower the count on deletions.
+    #This method will return the count.
     return @count
   end
 end
-
-# x = CompleteMe.new
-# x.insert("newer")
-# x.insert("branch")
-# x.insert("bran")
-# x.insert("new")
-# x.insert("fruit")
-# x.count
