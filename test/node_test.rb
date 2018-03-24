@@ -13,10 +13,11 @@ class NodeTest < MiniTest::Test
     assert_instance_of Node, @n
   end
 
-  def test_word_flag_attribute_can_be_changed
-  skip
+  def test_it_initializes_with_the_correct_weight
+    expected = {}
+    assert_equal expected, @n.weight
   end
-
+  
   def test_it_holds_a_reference_to_another_node
   skip
   end
