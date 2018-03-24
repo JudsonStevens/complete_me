@@ -38,7 +38,7 @@ class CompleteMeTest < MiniTest::Test
     @c.insert("bran")
     actual = @c.count
     expected = 3
-    assert expected, actual
+    assert_equal expected, actual
   end
 
   def test_it_can_offer_suggestions
