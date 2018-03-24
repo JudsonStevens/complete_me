@@ -77,7 +77,7 @@ class CompleteMe
         node = node.child_nodes[letter]
       end
     end
-    all_words(node, prefix, final_word_suggestions)
+    final_word_suggestions = all_words(node, prefix, final_word_suggestions)
     return final_word_suggestions
   end
 
@@ -89,14 +89,13 @@ class CompleteMe
       final_word_suggestions << prefix 
       final_word_suggestions = final_word_suggestions.uniq
     end
-
     if node.child_nodes.empty? == false
-      node.child_nodes.each_key do |letter|
+      node.child_nodes.keys.each do |letter|
         if node.child_nodes.has_key?(letter)
-          prefix += letter
-          node = node.child_nodes[letter]
-          # require 'pry'; binding.pry 
-          all_words(node, prefix, final_word_suggestions)
+          new_prefix = prefix
+          new_prefix += letter
+          next_node = node.child_nodes[letter]
+          all_words(next_node, new_prefix, final_word_suggestions)
         end
       end
     end
