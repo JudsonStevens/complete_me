@@ -44,9 +44,9 @@ class CompleteMeTest < Minitest::Test
 
 
   def test_populate_returns_an_array_of_strings
-    strings = File.read('./complete_me_spec_harness/test/medium.txt')
-    expected_1 = 'southbound'
-    expected_2 = 'mastoncus'
+    strings = File.read('./lib/word_list.txt')
+    expected_1 = 'cascade'
+    expected_2 = 'monday'
     expected_3 = 1000
     assert_equal expected_1, @cm.populate(strings).first
     assert_equal expected_2, @cm.populate(strings).last
@@ -54,7 +54,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_inserts_strings_into_trie
-    strings = File.read('./complete_me_spec_harness/test/medium.txt')
+    strings = File.read('./lib/word_list.txt')
     @cm.populate(strings)
     assert @cm.search('bullfinch')
   end
