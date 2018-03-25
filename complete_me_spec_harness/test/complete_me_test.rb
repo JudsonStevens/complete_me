@@ -48,14 +48,12 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_selects_off_of_medium_dataset
-    skip
     cm.populate(medium_word_list)
     cm.select("wi", "wizardly")
     assert_equal ["wizardly", "williwaw"], cm.suggest("wi")
   end
 
   def test_works_with_large_dataset
-    skip
     cm.populate(large_word_list)
     assert_equal ["doggerel", "doggereler", "doggerelism", "doggerelist", "doggerelize", "doggerelizer"], cm.suggest("doggerel").sort
     cm.select("doggerel", "doggerelist")
@@ -63,7 +61,8 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_splits_string_at_new_line
-    File.read("./test/medium.txt")
+    skip
+    File.read("../complete_me/complete_me_spec_harness/test/medium.txt")
     expected =
     assert_equal expected, @cm.populate(strings)
   end
@@ -71,6 +70,15 @@ class CompleteMeTest < Minitest::Test
   def test_suggest_returns_final_word_suggestions
 
   end
+
+  def test_search_finds_the_right_node
+    insert_words(["pizza", "aardvark", "zombies", "a", "xylophones"])
+    node =  cm.search("aardvark")
+    expected = node.word_flag
+    actual = true
+    assert_equal expected, actual
+  end
+
 
   def test_search_checks_each_node_for_child_node_with_letter
 
