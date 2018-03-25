@@ -11,7 +11,7 @@ class CompleteMe
 
   def insert(word, node = @root_node)
     #Take each letter of the input word and ask if the node before has the same
-    #letter as a key already. If not, start a new node. If it does, then set the 
+    #letter as a key already. If not, start a new node. If it does, then set the
     #final node value equal to the last letter.
     word.each_char.map do |letter|
       if node.child_nodes.has_key?(letter) == false

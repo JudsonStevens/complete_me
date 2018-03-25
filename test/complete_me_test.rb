@@ -2,6 +2,7 @@ require "minitest"
 require "minitest/emoji"
 require "minitest/autorun"
 require "./lib/complete_me"
+require "pry"
 
 class CompleteMeTest < Minitest::Test
 
@@ -61,18 +62,19 @@ class CompleteMeTest < Minitest::Test
   #   assert_equal "doggerelist", cm.suggest("doggerel").first
   # end
 
-  # #METHODS
-  # def insert_words(words)
-  #   cm.populate(words.join("\n"))
-  # end
-  #
-  # def medium_word_list
-  #   File.read("../complete_me/complete_me_spec_harness/test/medium.txt")
-  # end
-  #
-  # def large_word_list
-  #   File.read("/usr/share/dict/words")
-  # end
+  #METHODS
+  def insert_words(words)
+    cm.populate(words.join("\n"))
+  end
+
+  def medium_word_list
+    File.read("../complete_me/complete_me_spec_harness/test/medium.txt")
+  end
+
+  def large_word_list
+    File.read("/usr/share/dict/words")
+  end
+
   def test_count_starts_at_zero
     expected = 0
     assert_equal expected, @cm.count
@@ -85,14 +87,14 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_inserts_multiple_words
-    @cm.insert("hedgehog\nboar\ncapybara\nporcupine")
+    @cm.insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     expected = 4
-    assert_equal expected, @cm.count 
+    assert_equal expected, @cm.count
   end
 
 
   def test_populate_returns_an_array_of_strings
-    strings = File.read("./test/medium.txt")
+    strings = File.read("./complete_me_spec_harness/test/medium.txt")
     expected_1 = "southbound"
     expected_2 = "mastoncus"
     expected_3 = 1000
@@ -102,19 +104,26 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_inserts_strings_into_trie
-    strings = File.read("./test/medium.txt")
+    strings = File.read("./complete_me_spec_harness/test/medium.txt")
     @cm.populate(strings)
-    expected = "bullfinch".node.word_flag == true
-    assert_equal expected, "bullfinch".node.word_flag
+    assert @cm.search("bullfinch")
   end
 
   def test_suggest_returns_final_word_suggestions
-    expected = final_word_suggestions
-    assert_equal expected, @cm.suggest
+    prefix = "a"
+    @cm.insert_words(["am", "at", "banana"])
+    expected = ["am", "at"]
+    assert_equal expected, @cm.suggest(prefix)
   end
 
-  def test_search_checks_each_node_for_child_node_with_letter
+  def test_search_returns_false_if_word_not_in_trie
+    refute @cm.search("lcjkadsd")
+  end
 
+  def test_unknown_prefix_is_not_a_word
+    @cm.insert("hello")
+    binding.pry
+    refute @cm.search("hell")
   end
 
   def test_word_flag_starts_false
