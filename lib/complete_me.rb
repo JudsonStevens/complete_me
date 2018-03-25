@@ -71,8 +71,8 @@ class CompleteMe
       end
     end
     final_word_suggestions = all_words(node, substring, final_word_suggestions)
-    sort_weighted_answers(substring, final_word_suggestions)
-    return final_word_suggestions
+    final_word_suggestions = sort_weighted_answers(substring, final_word_suggestions)
+    return final_word_suggestions.map {|suggestion| suggestion[0]}
   end
 
   #This method takes the node from the original suggest method and then finds
@@ -132,10 +132,8 @@ class CompleteMe
     sorted_word_suggestions = weighted_suggestions.sort_by { |weight| 
       weight[1]
     }
-    final_word_suggestions = sorted_word_suggestions.reverse
-    require 'pry'; binding.pry
-    return final_word_suggestion
-    # require 'pry'; binding.pry
+    sorted_word_suggestions = sorted_word_suggestions.reverse
+    return sorted_word_suggestions
   end
 
 end
