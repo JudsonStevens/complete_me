@@ -63,7 +63,8 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_splits_string_at_new_line
-    File.read("./test/medium.txt")
+    skip
+    File.read("../complete_me/complete_me_spec_harness/test/medium.txt")
     expected =
     assert_equal expected, @cm.populate(strings)
   end
@@ -71,6 +72,16 @@ class CompleteMeTest < Minitest::Test
   def test_suggest_returns_final_word_suggestions
 
   end
+
+  def test_search_finds_the_right_node
+    insert_words(["pizza", "aardvark", "zombies", "a", "xylophones"])
+    node =  cm.search("aardvark")
+    expected = node
+    actual = true
+    assert_equal expected, actual
+
+  end
+
 
   def test_search_checks_each_node_for_child_node_with_letter
 

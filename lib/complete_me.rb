@@ -13,7 +13,7 @@ class CompleteMe
     #Take each letter of the input word and ask if the node before has the same
     #letter as a key already. If not, start a new node. If it does, then set the 
     #final node value equal to the last letter.
-    word.each_char.map do |letter|
+    word.each_char do |letter|
       if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
       end
@@ -44,7 +44,7 @@ class CompleteMe
       end
     end
     if new_word == word && node.word_flag == true
-      return node
+      return true
     end 
   end
 
@@ -103,10 +103,18 @@ class CompleteMe
     final_word_suggestions = final_word_suggestions.uniq
   end
 
-  def select(substring, suggestion)
-
-
+  #Take in the substring and the suggestion, and weight the word picked,
+  #increasing the weight by 1, to influence presentation using the same
+  #substring. This doesn't work if we are looking for a weighted variable
+  #depending on the substring input. We need to weight the end words
+  #based on the substring by using a hash with keys for each substring
+  #and a value of the number of times its been selected.
+  def select(substring, selected_suggestion)
+    node = search(selected_suggestion)
+    if node.weight.key?(substring)
+      node.weight[substring] += 1
+    else
+      node.weight[substring] = 1
+    end
   end
-
-
 end
