@@ -59,6 +59,7 @@ class CompleteMeTest < Minitest::Test
     cm.select("doggerel", "doggerelist")
     assert_equal "doggerelist", cm.suggest("doggerel").first
   end
+
   #METHODS
   def insert_words(words)
     cm.populate(words.join("\n"))
