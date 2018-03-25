@@ -29,6 +29,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_suggests_off_of_small_dataset
+
     insert_words(["pizza", "aardvark", "zombies", "a", "xylophones"])
     assert_equal ["pizza"], cm.suggest("p")
     assert_equal ["pizza"], cm.suggest("piz")

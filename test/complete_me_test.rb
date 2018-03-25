@@ -64,7 +64,8 @@ class CompleteMeTest < Minitest::Test
 
   #METHODS
   def insert_words(words)
-    cm.populate(words.join("\n"))
+    @cm.populate(words.join("\n"))
+
   end
 
   def medium_word_list
@@ -87,7 +88,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_inserts_multiple_words
-    @cm.insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     expected = 4
     assert_equal expected, @cm.count
   end
@@ -111,27 +112,44 @@ class CompleteMeTest < Minitest::Test
 
   def test_suggest_returns_final_word_suggestions
     prefix = "a"
-    @cm.insert_words(["am", "at", "banana"])
+    insert_words(["am", "at", "banana"])
     expected = ["am", "at"]
-    assert_equal expected, @cm.suggest(prefix)
+    assert_equal expected, @cm.suggest(prefix).sort
   end
 
   def test_search_returns_false_if_word_not_in_trie
-    refute @cm.search("lcjkadsd")
+    node = @cm.search("lcjkadsd")
   end
 
   def test_unknown_prefix_is_not_a_word
     @cm.insert("hello")
-    binding.pry
-    refute @cm.search("hell")
+    # binding.pry
+    node = @cm.search("hell")
+    refute node.word_flag
   end
 
-  def test_word_flag_starts_false
-    assert word_flag.false?
+  def test_it_can_delete_a_word
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
+    actual = @cm.include?("hedgehog")
+    expected = true
+    assert_equal expected, actual
+    @cm.delete("hedgehog")
+    refute @cm.include?("hedgehog") 
   end
 
-  def test_word_flag_can_be_set_to_true
+    def test_it_deletes_non_word_nodes_on_word_delete
+      insert_words(["actual", "act"])
+      @cm.delete("actual")
+      refute @cm.search("actua")
+    end
 
-  end
+
+  # def test_word_flag_starts_false
+  #   assert word_flag.false?
+  # end
+
+  # def test_word_flag_can_be_set_to_true
+
+  # end
 
 end
