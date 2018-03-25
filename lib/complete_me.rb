@@ -141,42 +141,45 @@ class CompleteMe
     sorted_word_suggestions = sorted_word_suggestions.reverse
   end
 
-  def delete(word)
-    node = search(word)
+  # def delete(word)
+  #   node = search(word)
+  #   if node.child_nodes.empty?
+  #    node.child_node.clear
+  #    node.weight.clear
+
+  #   elsif
+
+
+  # end
+
+  # def find_partial(substring)
+  #   new_substring = substring.each_char do |letter|
+  #     if node.child_nodes.has_key?(letter) == true
+  #       node = node.child_nodes[letter]
+  #     elsif node.child_nodes.has_key? == false
+  #       return false
+  #     end
+  #   end
+  #   change_node(new_substring, substring)
+  # end
+
+  def delete(substring)
+    # if new_substring == substring
+    node = search(substring)   
     if node.child_nodes.empty?
-     node.child_node.clear
-     node.weight.clear
-
-    elsif
-
-
+      delete_and_move_to_previous_node(substring)
+    elsif node.child_nodes.empty? == false 
+      node.word_flag = false
+    end 
   end
 
-  def find_partial(substring)
-    new_substring = substring.each_char do |letter|
-      if node.child_nodes.has_key?(letter) == true
-        node = node.child_nodes[letter]
-      elsif node.child_nodes.has_key? == false
-        return false
-      end
+  def delete_and_move_to_previous_node(substring)
+    last_letter = substring[-1]
+    substring = substring[0...-1]
+    node = search(substring)
+    if node.child_nodes.key?(last_letter)
+      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
     end
-    change_node(new_substring, substring)
-  end
-
-  def change_node(new_substring, substring)
-    if new_substring == substring
-      node = search(substring)   
-      if node.child_nodes.empty?
-        last_letter = substring[-1]
-        substring = substring[0...-1]
-        node = search(substring)
-        if node.child_nodes.key?(last_letter)
-          node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
-          find_partial(substring)
-        end
-      elsif node.child_nodes.empty? == false 
-        node.word_flag = false
-      end 
-    end
+    delete(substring)
   end
 end
