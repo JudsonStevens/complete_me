@@ -65,6 +65,7 @@ class CompleteMeTest < Minitest::Test
   #METHODS
   def insert_words(words)
     @cm.populate(words.join("\n"))
+
   end
 
   def medium_word_list
