@@ -39,11 +39,11 @@ class CompleteMe
     new_word = word.each_char do |letter|
       if node.child_nodes.has_key?(letter) == true
         node = node.child_nodes[letter]
-      elsif node.child_nodes.has_key? == false
+      elsif node.child_nodes.has_key?(letter) == false
         return false
       end
     end
-    if new_word == word && node.word_flag == true
+    if new_word == word
       return node
     end 
   end
@@ -141,6 +141,16 @@ class CompleteMe
     sorted_word_suggestions = sorted_word_suggestions.reverse
   end
 
+  def include?(word)
+    test_node = search(word)
+    if test_node.class == Node
+      return true
+    else
+      return false
+    end
+  end
+
+
   # def delete(word)
   #   node = search(word)
   #   if node.child_nodes.empty?
@@ -171,6 +181,7 @@ class CompleteMe
     elsif node.child_nodes.empty? == false 
       node.word_flag = false
     end 
+    @count -= 1
   end
 
   def delete_and_move_to_previous_node(substring)
