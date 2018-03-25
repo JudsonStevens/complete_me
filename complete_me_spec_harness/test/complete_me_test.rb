@@ -29,6 +29,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_suggests_off_of_small_dataset
+    skip
     insert_words(["pizza", "aardvark", "zombies", "a", "xylophones"])
     assert_equal ["pizza"], cm.suggest("p")
     assert_equal ["pizza"], cm.suggest("piz")
@@ -43,12 +44,12 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_suggests_off_of_medium_dataset
+    skip
     cm.populate(medium_word_list)
     assert_equal ["williwaw", "wizardly"], cm.suggest("wi").sort
   end
 
   def test_selects_off_of_medium_dataset
-    skip
     cm.populate(medium_word_list)
     cm.select("wi", "wizardly")
     assert_equal ["wizardly", "williwaw"], cm.suggest("wi")
@@ -76,10 +77,9 @@ class CompleteMeTest < Minitest::Test
   def test_search_finds_the_right_node
     insert_words(["pizza", "aardvark", "zombies", "a", "xylophones"])
     node =  cm.search("aardvark")
-    expected = node
+    expected = node.word_flag
     actual = true
     assert_equal expected, actual
-
   end
 
 

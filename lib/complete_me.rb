@@ -44,7 +44,7 @@ class CompleteMe
       end
     end
     if new_word == word && node.word_flag == true
-      return true
+      return node
     end 
   end
 
@@ -63,14 +63,15 @@ class CompleteMe
   #To suggest, we need to first find the node at the end of the prefix given. 
   #After that, we need to find all words that use that prefix and have a valid
   #word_flag to signify they are a word.
-  def suggest(prefix, node = @root_node)
+  def suggest(substring, node = @root_node)
     final_word_suggestions = []
-    prefix.each_char do |letter|
+    substring.each_char do |letter|
       if node.child_nodes.key?(letter) == true
         node = node.child_nodes[letter]
       end
     end
-    final_word_suggestions = all_words(node, prefix, final_word_suggestions)
+    final_word_suggestions = all_words(node, substring, final_word_suggestions)
+    sort_weighted_answers(substring, final_word_suggestions)
     return final_word_suggestions
   end
 
@@ -117,4 +118,24 @@ class CompleteMe
       node.weight[substring] = 1
     end
   end
+
+  def sort_weighted_answers(substring, final_word_suggestion)
+    weighted_suggestions = []
+    final_word_suggestion.map do |word|
+      node = search(word)
+      if node.weight[substring] == nil
+        node.weight[substring] = 0
+      end
+      weighted_suggestions << [word, node.weight[substring]]
+    end
+    weighted_suggestions.compact
+    sorted_word_suggestions = weighted_suggestions.sort_by { |weight| 
+      weight[1]
+    }
+    final_word_suggestions = sorted_word_suggestions.reverse
+    require 'pry'; binding.pry
+    return final_word_suggestion
+    # require 'pry'; binding.pry
+  end
+
 end
