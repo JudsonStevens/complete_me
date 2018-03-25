@@ -71,7 +71,7 @@ class CompleteMe
       end
     end
     final_word_suggestions = all_words(node, substring, final_word_suggestions)
-    final_word_suggestions = sort_weighted_answers(substring, final_word_suggestions)
+    final_word_suggestions = sort_weighted_suggestions(substring, final_word_suggestions)
     return final_word_suggestions.map {|suggestion| suggestion[0]}
   end
 
@@ -119,21 +119,26 @@ class CompleteMe
     end
   end
 
-  def sort_weighted_answers(substring, final_word_suggestion)
+  #We need to sort the answers by weight, so we take in the substring and the array of 
+  #suggestions given by the suggest method. We find the node for each one, and if the weight
+  #hash is nil, we set that value to zero to make the calculations easier. We then feed
+  #an array of the word and it's weight into the weighted_suggestions array and sort that
+  #by the weight value. We then reverse the array to get descending order and return it.
+  def sort_weighted_suggestions(substring, final_word_suggestion)
     weighted_suggestions = []
     final_word_suggestion.map do |word|
       node = search(word)
-      if node.weight[substring] == nil
-        node.weight[substring] = 0
-      end
+      node.weight[substring] = 0 if node.weight[substring] == nil
       weighted_suggestions << [word, node.weight[substring]]
     end
-    weighted_suggestions.compact
-    sorted_word_suggestions = weighted_suggestions.sort_by { |weight| 
-      weight[1]
-    }
-    sorted_word_suggestions = sorted_word_suggestions.reverse
+    sorted_word_suggestions = sort_suggestions_into_correct_order(weighted_suggestions)
     return sorted_word_suggestions
+  end
+
+  def sort_suggestions_into_correct_order(weighted_suggestions)
+    weighted_suggestions.compact
+    sorted_word_suggestions = weighted_suggestions.sort_by { |weight| weight[1]}
+    sorted_word_suggestions = sorted_word_suggestions.reverse
   end
 
 end
