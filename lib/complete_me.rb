@@ -139,4 +139,9 @@ class CompleteMe
     sorted_word_suggestions = weighted_suggestions.sort_by { |weight| weight[1] }
     sorted_word_suggestions = sorted_word_suggestions.reverse
   end
+
+  def insert_words(words)
+    @cm.populate(words.join("\n"))
+  end
+
 end

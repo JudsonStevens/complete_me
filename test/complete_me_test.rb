@@ -10,62 +10,10 @@ class CompleteMeTest < Minitest::Test
     @cm = CompleteMe.new
   end
 
-  #SPEC HARNESS
-  # def test_starting_count
-  #   assert_equal 0, cm.count
-  # end
-  #
-  # def test_inserts_single_word
-  #   cm.insert("pizza")
-  #   assert_equal 1, cm.count
-  # end
-  #
-  # def test_inserts_multiple_words
-  #   cm.populate("pizza\ndog\ncat")
-  #   assert_equal 3, cm.count
-  # end
-  #
-  # def test_counts_inserted_words
-  #   insert_words(["pizza", "aardvark", "zombies", "a", "xylophones"])
-  #   assert_equal 5, cm.count
-  # end
-  #
-  # def test_suggests_off_of_small_dataset
-  #   insert_words(["pizza", "aardvark", "zombies", "a", "xylophones"])
-  #   assert_equal ["pizza"], cm.suggest("p")
-  #   assert_equal ["pizza"], cm.suggest("piz")
-  #   assert_equal ["zombies"], cm.suggest("zo")
-  #   assert_equal ["a", "aardvark"], cm.suggest("a").sort
-  #   assert_equal ["aardvark"], cm.suggest("aa")
-  # end
-  #
-  # def test_inserts_medium_dataset
-  #   cm.populate(medium_word_list)
-  #   assert_equal medium_word_list.split("\n").count, cm.count
-  # end
-  #
-  # def test_suggests_off_of_medium_dataset
-  #   cm.populate(medium_word_list)
-  #   assert_equal ["williwaw", "wizardly"], cm.suggest("wi").sort
-  # end
-  #
-  # def test_selects_off_of_medium_dataset
-  #   cm.populate(medium_word_list)
-  #   cm.select("wi", "wizardly")
-  #   assert_equal ["wizardly", "williwaw"], cm.suggest("wi")
-  # end
-  #
-  # def test_works_with_large_dataset
-  #   cm.populate(large_word_list)
-  #   assert_equal ["doggerel", "doggereler", "doggerelism", "doggerelist", "doggerelize", "doggerelizer"], cm.suggest("doggerel").sort
-  #   cm.select("doggerel", "doggerelist")
-  #   assert_equal "doggerelist", cm.suggest("doggerel").first
-  # end
 
-  #METHODS
-  def insert_words(words)
-    cm.populate(words.join("\n"))
-  end
+  # def insert_words(words)
+  #   cm.populate(words.join("\n"))
+  # end
 
   def medium_word_list
     File.read("../complete_me/complete_me_spec_harness/test/medium.txt")
@@ -86,6 +34,8 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, @cm.count
   end
 
+#Populate is not doing what we expect in insert_words method
+#(complete_me.rb line 143)
   def test_it_inserts_multiple_words
     @cm.insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     expected = 4
@@ -109,6 +59,8 @@ class CompleteMeTest < Minitest::Test
     assert @cm.search("bullfinch")
   end
 
+  #Populate is not doing what we expect in insert_words method
+  #(complete_me.rb line 143)
   def test_suggest_returns_final_word_suggestions
     prefix = "a"
     @cm.insert_words(["am", "at", "banana"])
@@ -116,13 +68,14 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, @cm.suggest(prefix)
   end
 
+#Search is not taking arguments and returning has_key? false for
+#"lcjkadsd" as expected
   def test_search_returns_false_if_word_not_in_trie
     refute @cm.search("lcjkadsd")
   end
 
   def test_unknown_prefix_is_not_a_word
     @cm.insert("hello")
-    #binding.pry
     refute @cm.search("hel")
   end
 
