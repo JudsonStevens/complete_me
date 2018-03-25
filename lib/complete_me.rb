@@ -60,7 +60,7 @@ class CompleteMe
     strings.split("\n").each { |word| insert(word)}
   end
   
-  # To suggest, we need to first find the node at the end of the prefix given. 
+  # To suggest, we need to first find the node at the end of the prefix given.
   # After that, we need to find all words that use that prefix and have a valid
   # word_flag to signify they are a word.
   def suggest(substring, node = @root_node)
@@ -72,7 +72,7 @@ class CompleteMe
     end
     final_word_suggestions = all_words(node, substring, final_word_suggestions)
     final_word_suggestions = sort_weighted_suggestions(substring, final_word_suggestions)
-    return final_word_suggestions.map {|suggestion| suggestion[0]}
+    return final_word_suggestions.map { |suggestion| suggestion[0] }
   end
 
   #  This method takes the node from the original suggest method and then finds
@@ -131,14 +131,13 @@ class CompleteMe
       node.weight[substring] = 0 if node.weight[substring] == nil
       weighted_suggestions << [word, node.weight[substring]]
     end
-    sorted_word_suggestions = sort_suggestions_into_correct_order(weighted_suggestions)
+    sorted_word_suggestions = sort_into_correct_order(weighted_suggestions)
     return sorted_word_suggestions
   end
 
-  def sort_suggestions_into_correct_order(weighted_suggestions)
+  def sort_into_correct_order(weighted_suggestions)
     weighted_suggestions.compact
-    sorted_word_suggestions = weighted_suggestions.sort_by { |weight| weight[1]}
+    sorted_word_suggestions = weighted_suggestions.sort_by { |weight| weight[1] }
     sorted_word_suggestions = sorted_word_suggestions.reverse
   end
-
 end
