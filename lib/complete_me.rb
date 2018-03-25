@@ -135,7 +135,7 @@ class CompleteMe
     return sorted_word_suggestions
   end
 
-  def sort_suggestions _into_correct_order(weighted_suggestions)
+  def sort_suggestions_into_correct_order(weighted_suggestions)
     weighted_suggestions.compact
     sorted_word_suggestions = weighted_suggestions.sort_by { |weight| weight[1]}
     sorted_word_suggestions = sorted_word_suggestions.reverse

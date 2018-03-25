@@ -79,7 +79,6 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, actual
   end
 
-
   def test_search_checks_each_node_for_child_node_with_letter
 
   end 
