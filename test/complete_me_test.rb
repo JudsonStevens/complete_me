@@ -76,20 +76,17 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_count_starts_at_zero
-    skip
     expected = 0
     assert_equal expected, @cm.count
   end
 
   def test_it_inserts_a_word
-    skip
     @cm.insert("hedgehog")
     expected = 1
     assert_equal expected, @cm.count
   end
 
   def test_it_inserts_multiple_words
-    skip
     insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     expected = 4
     assert_equal expected, @cm.count
@@ -97,7 +94,6 @@ class CompleteMeTest < Minitest::Test
 
 
   def test_populate_returns_an_array_of_strings
-    skip
     strings = File.read("./complete_me_spec_harness/test/medium.txt")
     expected_1 = "southbound"
     expected_2 = "mastoncus"
@@ -108,14 +104,12 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_inserts_strings_into_trie
-    skip
     strings = File.read("./complete_me_spec_harness/test/medium.txt")
     @cm.populate(strings)
     assert @cm.search("bullfinch")
   end
 
   def test_suggest_returns_final_word_suggestions
-    skip
     prefix = "a"
     insert_words(["am", "at", "banana"])
     expected = ["am", "at"]
@@ -123,15 +117,14 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_search_returns_false_if_word_not_in_trie
-    skip
-    refute @cm.search("lcjkadsd")
+    node = @cm.search("lcjkadsd")
   end
 
   def test_unknown_prefix_is_not_a_word
-    skip
     @cm.insert("hello")
     # binding.pry
-    refute @cm.search("hell")
+    node = @cm.search("hell")
+    refute node.word_flag
   end
 
   def test_it_can_delete_a_word
@@ -140,10 +133,14 @@ class CompleteMeTest < Minitest::Test
     expected = true
     assert_equal expected, actual
     @cm.delete("hedgehog")
-    refute @cm.include?("hedgehog")
-    
-    
+    refute @cm.include?("hedgehog") 
   end
+
+    def test_it_deletes_non_word_nodes_on_word_delete
+      insert_words(["actual", "act"])
+      @cm.delete("actual")
+      refute @cm.search("actua")
+    end
 
 
   # def test_word_flag_starts_false

@@ -188,7 +188,7 @@ class CompleteMe
     last_letter = substring[-1]
     substring = substring[0...-1]
     node = search(substring)
-    if node.child_nodes.key?(last_letter)
+    if node.child_nodes.key?(last_letter) && node.word_flag == false
       node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
     end
     delete(substring)
