@@ -122,16 +122,17 @@ class CompleteMeTest < Minitest::Test
 
   def test_unknown_prefix_is_not_a_word
     @cm.insert("hello")
-    binding.pry
-    refute @cm.search("hell")
+    #binding.pry
+    refute @cm.search("hel")
   end
 
   def test_word_flag_starts_false
-    assert word_flag.false?
+    refute @cm.search("")
   end
 
   def test_word_flag_can_be_set_to_true
-
+    @cm.insert("hello")
+    assert @cm.search("hello")
   end
 
 end
