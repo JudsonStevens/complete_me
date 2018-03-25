@@ -1,7 +1,7 @@
 require "minitest"
 require "minitest/emoji"
 require "minitest/autorun"
-require "../complete_me/lib/complete_me"
+require "./complete_me/lib/complete_me"
 
 class CompleteMeTest < Minitest::Test
   attr_reader :cm
@@ -16,14 +16,6 @@ class CompleteMeTest < Minitest::Test
   def test_inserts_single_word
     cm.insert("pizza")
     assert_equal 1, cm.count
-  end
-
-  def test_word_flag_starts_false
-
-  end 
-
-  def test_word_flag_can_be_set_to_true
-
   end
 
   def test_inserts_multiple_words
@@ -56,34 +48,17 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_selects_off_of_medium_dataset
-    skip
     cm.populate(medium_word_list)
     cm.select("wi", "wizardly")
     assert_equal ["wizardly", "williwaw"], cm.suggest("wi")
   end
 
   def test_works_with_large_dataset
-    skip
     cm.populate(large_word_list)
     assert_equal ["doggerel", "doggereler", "doggerelism", "doggerelist", "doggerelize", "doggerelizer"], cm.suggest("doggerel").sort
     cm.select("doggerel", "doggerelist")
     assert_equal "doggerelist", cm.suggest("doggerel").first
   end
-
-  def test_populate_splits_string_at_new_line
-    File.read("./test/medium.txt")
-    expected =
-    assert_equal expected, @cm.populate(strings)
-  end
-
-  def test_suggest_returns_final_word_suggestions
-
-  end
-
-  def test_search_checks_each_node_for_child_node_with_letter
-
-  end
-
   #METHODS
   def insert_words(words)
     cm.populate(words.join("\n"))
