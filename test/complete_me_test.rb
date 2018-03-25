@@ -73,19 +73,44 @@ class CompleteMeTest < Minitest::Test
   # def large_word_list
   #   File.read("/usr/share/dict/words")
   # end
+  def test_count_starts_at_zero
+    expected = 0
+    assert_equal expected, @cm.count
+  end
+
+  def test_it_inserts_a_word
+    @cm.insert("hedgehog")
+    expected = 1
+    assert_equal expected, @cm.count
+  end
+
+  def test_it_inserts_multiple_words
+    @cm.insert("hedgehog\nboar\ncapybara\nporcupine")
+    expected = 4
+    assert_equal expected, @cm.count 
+  end
+
 
   def test_populate_returns_an_array_of_strings
-    File.read("./test/medium.txt")
-    expected = "southbound"
-    assert_equal expected, @cm.populate(strings).first 
+    strings = File.read("./test/medium.txt")
+    expected_1 = "southbound"
+    expected_2 = "mastoncus"
+    expected_3 = 1000
+    assert_equal expected_1, @cm.populate(strings).first
+    assert_equal expected_2, @cm.populate(strings).last
+    assert_equal expected_3, @cm.populate(strings).count
   end
 
   def test_populate_inserts_strings_into_trie
-
+    strings = File.read("./test/medium.txt")
+    @cm.populate(strings)
+    expected = "bullfinch".node.word_flag == true
+    assert_equal expected, "bullfinch".node.word_flag
   end
 
   def test_suggest_returns_final_word_suggestions
-
+    expected = final_word_suggestions
+    assert_equal expected, @cm.suggest
   end
 
   def test_search_checks_each_node_for_child_node_with_letter
