@@ -159,16 +159,16 @@ class CompleteMe
     node = search(substring)
     if node.child_nodes.empty?
       delete_and_move_to_previous_node(substring)
-    elsif node.child_nodes.empty? == false 
+    elsif node.child_nodes.empty? == false
       node.word_flag = false
-    end 
+    end
     @count -= 1
   end
 
   # This method comes into play if the node we want to delete doesn't have any children.
-  # We set last_letter equal to the last letter in the substring and make the substring
-  # equal to the original string minus the first letter. We then find the node for that
-  # substring. The search then finds the node for the substring without the last letter.
+  # We set last_letter equal to the last letter in the substring
+  # we make the substring equal to the original string, minus the first letter.
+  #We then find the node for that substring. The search then finds the node for the substring without the last letter.
   # This allows us to ask whether or not that letter contains the last_letter as a child,
   # and also we check to make sure it's not the ending of another word already. If the node
   # we end up on has a word_flag of true, then we run the actual delete portion of the
@@ -191,7 +191,9 @@ class CompleteMe
 
   def read_CSV_file
     column_data = []
-    csv = CSV.foreach('addresses.csv') { |row| column_data << row[20] }
+    csv = CSV.foreach('addresses.csv') do
+      |row| column_data << row[20]
+    end
     populate(column_data.join("\n"))
   end
 
