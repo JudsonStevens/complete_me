@@ -93,6 +93,11 @@ class CompleteMeTest < Minitest::Test
     refute @cm.search("actu")
   end
 
+  def test_it_can_check_inclusion_of_a_word
+    insert_words(["actual", "act"])
+    assert @cm.include?("actual")
+    refute @cm.include?("beowulf")
+  end
 
   # def test_word_flag_starts_false
   #   assert word_flag.false?
