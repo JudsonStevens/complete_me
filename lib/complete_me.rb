@@ -1,4 +1,5 @@
 require_relative 'node'
+require 'csv'
 
 class CompleteMe
   attr_accessor :root_node,
@@ -14,6 +15,7 @@ class CompleteMe
   # final node value equal to the last letter. Once it's ran through all of the
   # characters, it sets the word_flag = true.
   def insert(word, node = @root_node)
+
     word.each_char do |letter|
       if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
@@ -158,9 +160,9 @@ class CompleteMe
     node = search(substring)   
     if node.child_nodes.empty?
       delete_and_move_to_previous_node(substring)
-    elsif node.child_nodes.empty? == false
+    elsif node.child_nodes.empty? == false 
       node.word_flag = false
-    end
+    end 
     @count -= 1
   end
 
@@ -187,4 +189,15 @@ class CompleteMe
       node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
     end  
   end
+
+  def read_CSV_file
+    column_data = []
+    csv = CSV.foreach('addresses.csv') { |row| column_data << row[20] }
+    populate(column_data.join("\n"))
+  end
+
+  def dictionary_search
+
+  end
+
 end
