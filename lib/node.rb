@@ -9,7 +9,5 @@ class Node
     @child_nodes = {}
     @weight = {}
   end
-  
+
 end
-
-

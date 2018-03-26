@@ -158,9 +158,9 @@ class CompleteMe
     node = search(substring)   
     if node.child_nodes.empty?
       delete_and_move_to_previous_node(substring)
-    elsif node.child_nodes.empty? == false 
+    elsif node.child_nodes.empty? == false
       node.word_flag = false
-    end 
+    end
     @count -= 1
   end
 
