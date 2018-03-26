@@ -90,7 +90,7 @@ class CompleteMeTest < Minitest::Test
   def test_it_deletes_non_word_nodes_on_word_delete
     insert_words(["actual", "act"])
     @cm.delete("actual")
-    refute @cm.search("actua")
+    refute @cm.search("actu")
   end
 
 

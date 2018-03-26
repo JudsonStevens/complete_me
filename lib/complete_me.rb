@@ -149,31 +149,13 @@ class CompleteMe
     end
   end
 
-
-  # def delete(word)
-  #   node = search(word)
-  #   if node.child_nodes.empty?
-  #    node.child_node.clear
-  #    node.weight.clear
-
-  #   elsif
-
-
-  # end
-
-  # def find_partial(substring)
-  #   new_substring = substring.each_char do |letter|
-  #     if node.child_nodes.has_key?(letter) == true
-  #       node = node.child_nodes[letter]
-  #     elsif node.child_nodes.has_key? == false
-  #       return false
-  #     end
-  #   end
-  #   change_node(new_substring, substring)
-  # end
-
+  # To delete a node, first we find the last node in the substring. This would be the "d" in
+  # "wizard", for example. Once we have that, we ask whether the child nodes are empty. If they are not,
+  # then the solution is simple, we set the word flag of that "d" node to false to
+  # indicate it is not the end of a word anymore and we are done. If the node is a leaf,
+  # it's a bit more complicated. We send the substring and node over to the 
+  # delete_and_move_to_previous_node method.
   def delete(substring)
-    # if new_substring == substring
     node = search(substring)   
     if node.child_nodes.empty?
       delete_and_move_to_previous_node(substring)
@@ -183,13 +165,22 @@ class CompleteMe
     @count -= 1
   end
 
+  # This method comes into play if the node we want to delete doesn't have any children. 
+  # We set last_letter equal to the last letter in the substring and make the substring 
+  # equal to the original string minus the first letter. We then find the node for that 
+  # substring. The search then finds the node for the substring without the last letter.
+  # This allows us to ask whether or not that letter contains the last_letter as a child,
+  # and also we check to make sure it's not the ending of another word already.
   def delete_and_move_to_previous_node(substring)
     last_letter = substring[-1]
     substring = substring[0...-1]
     node = search(substring)
     if node.child_nodes.key?(last_letter) && node.word_flag == false
       node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
+      delete(substring)
+    elsif node.child_nodes.key?(last_letter) && node.word_flag == true
+      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
     end
-    delete(substring)
+    
   end
 end
