@@ -15,7 +15,7 @@ class CompleteMe
   # characters, it sets the word_flag = true.
   def insert(word, node = @root_node)
     word.each_char do |letter|
-      if node.child_nodes.has_key?(letter) == false 
+      if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
       end
       node = node.child_nodes[letter]
@@ -181,10 +181,10 @@ class CompleteMe
     substring = substring[0...-1]
     node = search(substring)
     if node.child_nodes.key?(last_letter) && node.word_flag == false
-      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
+      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter) }
       delete(substring)
     elsif node.child_nodes.key?(last_letter) && node.word_flag == true
-      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
+      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter) }
     end
   end
 end
