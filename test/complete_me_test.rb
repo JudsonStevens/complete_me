@@ -115,10 +115,4 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, @cm.delete("act")
   end
 
-  def test_it_can_check_inclusion_of_a_word
-    insert_words(["actual", "act"])
-    assert @cm.include?("actual")
-    refute @cm.include?("beowulf")
-  end
-
 end

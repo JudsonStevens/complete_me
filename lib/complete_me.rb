@@ -15,7 +15,7 @@ class CompleteMe
   # characters, it sets the word_flag = true.
   def insert(word, node = @root_node)
     word.each_char do |letter|
-      if node.child_nodes.has_key?(letter) == false
+      if node.child_nodes.has_key?(letter) == false 
         node.child_nodes[letter] = Node.new
       end
       node = node.child_nodes[letter]
@@ -25,8 +25,8 @@ class CompleteMe
   end
 
   # Take in an argument and then strip it down and check each node to see if it has
-  # a child node containing that letter. Once the new_word has ran through all of the 
-  # characters in the supplied word, and found nodes for all of them, it returns the 
+  # a child node containing that letter. Once the new_word has ran through all of the
+  # characters in the supplied word, and found nodes for all of them, it returns the
   # node of the last character in the word we wanted to find. The last if statement
   # just double checks to make sure we returned the right new_word. Possibly
   # extraneous, discuss on Monday.
@@ -152,10 +152,10 @@ class CompleteMe
   # "wizard", for example. Once we have that, we ask whether the child nodes are empty. If they are not,
   # then the solution is simple, we set the word flag of that "d" node to false to
   # indicate it is not the end of a word anymore and we are done. If the node is a leaf,
-  # it's a bit more complicated. We send the substring and node over to the 
+  # it's a bit more complicated. We send the substring and node over to the
   # delete_and_move_to_previous_node method.
   def delete(substring)
-    node = search(substring)   
+    node = search(substring)
     if node.child_nodes.empty?
       delete_and_move_to_previous_node(substring)
     elsif node.child_nodes.empty? == false
@@ -164,18 +164,18 @@ class CompleteMe
     @count -= 1
   end
 
-  # This method comes into play if the node we want to delete doesn't have any children. 
-  # We set last_letter equal to the last letter in the substring and make the substring 
-  # equal to the original string minus the first letter. We then find the node for that 
+  # This method comes into play if the node we want to delete doesn't have any children.
+  # We set last_letter equal to the last letter in the substring and make the substring
+  # equal to the original string minus the first letter. We then find the node for that
   # substring. The search then finds the node for the substring without the last letter.
   # This allows us to ask whether or not that letter contains the last_letter as a child,
   # and also we check to make sure it's not the ending of another word already. If the node
-  # we end up on has a word_flag of true, then we run the actual delete portion of the 
-  # method one more time and end. The delete portion takes the array of hashes of 
+  # we end up on has a word_flag of true, then we run the actual delete portion of the
+  # method one more time and end. The delete portion takes the array of hashes of
   # the letters, duplicates it, and uses .tap to chain on the actual delete of the
   # hash containing the character we are removing. This method returns the new array
   # of hashes, which is stored as the node's new child_nodes. The delete is run again
-  # until the node it ends up on has a word_flag of true. 
+  # until the node it ends up on has a word_flag of true.
   def delete_and_move_to_previous_node(substring)
     last_letter = substring[-1]
     substring = substring[0...-1]
@@ -185,6 +185,6 @@ class CompleteMe
       delete(substring)
     elsif node.child_nodes.key?(last_letter) && node.word_flag == true
       node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
-    end  
+    end
   end
 end
