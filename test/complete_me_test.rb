@@ -110,16 +110,9 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_count_can_go_down
-
+    insert_words(["actual", "act"])
+    expected = 1
+    assert_equal expected, @cm.delete("act")
   end
-
-
-  # def test_word_flag_starts_false
-  #   assert word_flag.false?
-  # end
-
-  # def test_word_flag_can_be_set_to_true
-
-  # end
 
 end
