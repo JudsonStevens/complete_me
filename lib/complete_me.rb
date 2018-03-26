@@ -15,6 +15,7 @@ class CompleteMe
   # final node value equal to the last letter. Once it's ran through all of the
   # characters, it sets the word_flag = true.
   def insert(word, node = @root_node)
+
     word.each_char do |letter|
       if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
@@ -197,5 +198,8 @@ class CompleteMe
     populate(column_data.join("\n"))
   end
 
+  def dictionary_search
+
+  end
 
 end
