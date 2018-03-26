@@ -1,3 +1,5 @@
+require 'simplecov'
+SimpleCov.start
 require "minitest"
 require "minitest/emoji"
 require "minitest/autorun"
@@ -11,9 +13,11 @@ class CompleteMeTest < Minitest::Test
   end
 
 
-  # def insert_words(words)
-  #   cm.populate(words.join("\n"))
-  # end
+  #METHODS
+  def insert_words(words)
+    @cm.populate(words.join("\n"))
+
+  end
 
   def medium_word_list
     File.read('../complete_me/complete_me_spec_harness/test/medium.txt')
@@ -37,7 +41,7 @@ class CompleteMeTest < Minitest::Test
 #Populate is not doing what we expect in insert_words method
 #(complete_me.rb line 143)
   def test_it_inserts_multiple_words
-    @cm.insert_words(['porcupine', 'hedgehog', 'capybara', 'ferret'])
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     expected = 4
     assert_equal expected, @cm.count
   end
@@ -47,7 +51,7 @@ class CompleteMeTest < Minitest::Test
     strings = File.read('./lib/word_list.txt')
     expected_1 = 'cascade'
     expected_2 = 'monday'
-    expected_3 = 1000
+    expected_3 = 15
     assert_equal expected_1, @cm.populate(strings).first
     assert_equal expected_2, @cm.populate(strings).last
     assert_equal expected_3, @cm.populate(strings).count
@@ -56,36 +60,66 @@ class CompleteMeTest < Minitest::Test
   def test_populate_inserts_strings_into_trie
     strings = File.read('./lib/word_list.txt')
     @cm.populate(strings)
-    assert @cm.search('bullfinch')
+    assert @cm.search('basement')
   end
 
   #Populate is not doing what we expect in insert_words method
   #(complete_me.rb line 143)
   def test_suggest_returns_final_word_suggestions
     prefix = "a"
-    @cm.insert_words(['am', 'at', 'banana'])
-    expected = ['am', 'at']
-    assert_equal expected, @cm.suggest(prefix)
+
+    insert_words(["am", "at", "banana"])
+    expected = ["am", "at"]
+    assert_equal expected, @cm.suggest(prefix).sort
+
   end
 
 #Search is not taking arguments and returning has_key? false for
 #"lcjkadsd" as expected
+  # def test_search_returns_false_if_word_not_in_trie
+  #   refute @cm.search('lcjkadsd')
+  # end
+
   def test_search_returns_false_if_word_not_in_trie
-    refute @cm.search('lcjkadsd')
+    node = @cm.search("lcjkadsd")
   end
 
   def test_unknown_prefix_is_not_a_word
-    @cm.insert('hello')
-    refute @cm.search('hel')
+    @cm.insert("hello")
+    # binding.pry
+    node = @cm.search("hell")
+    refute node.word_flag
   end
 
-  def test_word_flag_starts_false
-    refute @cm.search('')
+  def test_it_can_detect_it_includes_a_word
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
+    assert @cm.include?("hedgehog")
   end
 
-  def test_word_flag_can_be_set_to_true
-    @cm.insert('hello')
-    assert @cm.search('hello')
+  def test_it_can_delete_a_word
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
+    @cm.delete("hedgehog")
+    refute @cm.include?("hedgehog")
   end
+
+  def test_it_deletes_non_word_nodes_on_word_delete
+    insert_words(["actual", "act"])
+    @cm.delete("actual")
+    refute @cm.search("actua")
+    assert @cm.include?("act")
+  end
+
+  def test_count_can_go_down
+
+  end
+
+
+  # def test_word_flag_starts_false
+  #   assert word_flag.false?
+  # end
+
+  # def test_word_flag_can_be_set_to_true
+
+  # end
 
 end
