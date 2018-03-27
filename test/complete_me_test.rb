@@ -28,11 +28,13 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_count_starts_at_zero
+
     expected = 0
     assert_equal expected, @cm.count
   end
 
   def test_it_inserts_a_word
+
     @cm.insert('hedgehog')
     expected = 1
     assert_equal expected, @cm.count
@@ -41,6 +43,7 @@ class CompleteMeTest < Minitest::Test
 #Populate is not doing what we expect in insert_words method
 #(complete_me.rb line 143)
   def test_it_inserts_multiple_words
+
     insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     expected = 4
     assert_equal expected, @cm.count
@@ -48,6 +51,7 @@ class CompleteMeTest < Minitest::Test
 
 
   def test_populate_returns_an_array_of_strings
+
     strings = File.read('./lib/word_list.txt')
     expected_1 = 'cascade'
     expected_2 = 'monday'
@@ -58,6 +62,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_inserts_strings_into_trie
+
     strings = File.read('./lib/word_list.txt')
     @cm.populate(strings)
     assert @cm.search('basement')
@@ -66,6 +71,7 @@ class CompleteMeTest < Minitest::Test
   #Populate is not doing what we expect in insert_words method
   #(complete_me.rb line 143)
   def test_suggest_returns_final_word_suggestions
+
     prefix = "a"
 
     insert_words(["am", "at", "banana"])
@@ -77,14 +83,16 @@ class CompleteMeTest < Minitest::Test
 #Search is not taking arguments and returning has_key? false for
 #"lcjkadsd" as expected
   # def test_search_returns_false_if_word_not_in_trie
-  #   refute @cm.search('lcjkadsd')
+  # refute @cm.search('lcjkadsd')
   # end
 
   def test_search_returns_false_if_word_not_in_trie
+
     node = @cm.search("lcjkadsd")
   end
 
   def test_unknown_prefix_is_not_a_word
+
     @cm.insert("hello")
     # binding.pry
     node = @cm.search("hell")
@@ -92,17 +100,20 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_can_detect_it_includes_a_word
+
     insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     assert @cm.include?("hedgehog")
   end
 
   def test_it_can_delete_a_word
+
     insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     @cm.delete("hedgehog")
     refute @cm.include?("hedgehog")
   end
 
   def test_it_deletes_non_word_nodes_on_word_delete
+
     insert_words(["actual", "act"])
     @cm.delete("actual")
     refute @cm.search("actua")
@@ -110,9 +121,34 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_count_can_go_down
+
     insert_words(["actual", "act"])
     expected = 1
     assert_equal expected, @cm.delete("act")
+  end
+
+  def test_it_can_check_inclusion_of_a_word
+
+    insert_words(["actual", "act"])
+    assert @cm.include?("actual")
+    refute @cm.include?("beowulf")
+  end
+
+  def test_it_inserts_the_CSV_list_correctly
+    @cm.read_CSV_file
+    assert @cm.search("8110 E Union Ave Spc PK1043")
+    assert @cm.search("8110 ")
+    @cm.select("8110", "8110 E Union Ave Spc PK1043")
+    assert_equal "8110 E Union Ave Spc PK1043", @cm.suggest("8110").first
+
+    # assert_equal "8110 E Union Ave Spc PK1043", @cm.suggest("8110 E Union Ave Spc PK104")
+  end
+
+  def test_it_can_make_mid_word_suggestions
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret", "cupacabra"])
+    expected = ["cupacabra", "porcupine"]
+    actual = @cm.suggest("cup", true)
+    assert_equal expected, actual
   end
 
 end
