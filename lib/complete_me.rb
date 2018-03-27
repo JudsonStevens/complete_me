@@ -17,14 +17,12 @@ class CompleteMe
   # characters, it sets the word_flag = true.
   def insert(word, node = @root_node)
     @word_log << word
-    word.each_char do |letter|
+    word.each_char { |letter|
       if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
       end
-      node = node.child_nodes[letter]
-    end
+      node = node.child_nodes[letter] }
     node.word_flag = true
-    @count += 1
   end
 
   # Take in an argument and then strip it down and check each node to see if it has
@@ -46,7 +44,17 @@ class CompleteMe
 
     # Most efficient way to count is to count insertions and lower the count on deletions.
     # This method will return the count.
-  def count
+  def count(node = @root_node)
+    node.child_nodes.each_key do |letter|
+      if node.child_nodes[letter].word_flag == true
+        @count += 1
+        count(node.child_nodes[letter])
+      elsif node.child_nodes[letter].word_flag == false
+        count(node.child_nodes[letter])
+      elsif node.child_nodes.empty?
+        break
+      end
+    end
     return @count
   end
 
@@ -170,7 +178,7 @@ class CompleteMe
     elsif node.child_nodes.empty? == false 
       node.word_flag = false
     end 
-    @count -= 1
+    # @count -= 1
   end
 
   # This method comes into play if the node we want to delete doesn't have any children. 
