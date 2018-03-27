@@ -174,9 +174,9 @@ class CompleteMe
   end
 
   # This method comes into play if the node we want to delete doesn't have any children.
-  # We set last_letter equal to the last letter in the substring
-  # we make the substring equal to the original string, minus the first letter.
-  #We then find the node for that substring. The search then finds the node for the substring without the last letter.
+  # We set last_letter equal to the last letter in the substring and make the substring
+  # equal to the original string minus the first letter. We then find the node for that
+  # substring. The search then finds the node for the substring without the last letter.
   # This allows us to ask whether or not that letter contains the last_letter as a child,
   # and also we check to make sure it's not the ending of another word already. If the node
   # we end up on has a word_flag of true, then we run the actual delete portion of the

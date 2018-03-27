@@ -95,6 +95,24 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_count_can_go_down
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
+    assert @cm.include?("hedgehog")
+  end
+
+  def test_it_can_delete_a_word
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
+    @cm.delete("hedgehog")
+    refute @cm.include?("hedgehog")
+  end
+
+  def test_it_deletes_non_word_nodes_on_word_delete
+    insert_words(["actual", "act"])
+    @cm.delete("actual")
+    refute @cm.search("actua")
+    assert @cm.include?("act")
+  end
+
+  def test_count_can_go_down
     insert_words(["actual", "act"])
     expected = 1
     assert_equal 2, @cm.count
@@ -103,7 +121,6 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_can_check_inclusion_of_a_word
-
     insert_words(['actual', 'act'])
     assert @cm.include?("actual")
     refute @cm.include?("beowulf")
@@ -115,8 +132,6 @@ class CompleteMeTest < Minitest::Test
     assert @cm.search('8110 ')
     @cm.select('8110', '8110 E Union Ave Spc PK1043')
     assert_equal '8110 E Union Ave Spc PK1043', @cm.suggest('8110').first
-
-    # assert_equal "8110 E Union Ave Spc PK1043", @cm.suggest("8110 E Union Ave Spc PK104")
   end
 
   def test_it_can_make_mid_word_suggestions
@@ -126,6 +141,7 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, actual
   end
 
+
   def medium_word_list
     File.read('../complete_me/complete_me_spec_harness/test/medium.txt')
   end
@@ -133,6 +149,4 @@ class CompleteMeTest < Minitest::Test
   def large_word_list
     File.read('/usr/share/dict/words')
   end
-
-
 end
