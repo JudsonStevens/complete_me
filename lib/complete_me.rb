@@ -55,7 +55,7 @@ class CompleteMe
     # The definition list in the local computer is divided by \n, allowing
     # it to be split into seperate words and then inserted.
   def populate(strings)
-    strings.split("\n").each { |word| insert(word)}
+    strings.split("\n").uniq.each { |word| insert(word)}
   end
 
   # To suggest, we need to first find the node at the end of the prefix given.
@@ -75,12 +75,9 @@ class CompleteMe
   def find_final_word_suggestions(node, substring, final_word_suggestions, mid_word)
     final_word_suggestions = find_all_words(node, substring, final_word_suggestions)
     if mid_word == true  
-      # require 'pry'; binding.pry
       final_word_suggestions += dictionary_search(substring)
       final_word_suggestions = final_word_suggestions.uniq.reverse
-      require 'pry'; binding.pry
     end
-    # require 'pry'; binding.pry
     final_word_suggestions = sort_weighted_suggestions(substring, final_word_suggestions)
   end
 
@@ -209,10 +206,8 @@ class CompleteMe
   end
 
   def dictionary_search(substring)
-    # require 'pry'; binding.pry
     dict_search_results = []
     dict_search_results = @word_log.grep(/#{substring}/).join(" ").split(" ")
     return dict_search_results
-    # require 'pry'; binding.pry
   end
 end
