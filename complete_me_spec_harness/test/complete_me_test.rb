@@ -74,5 +74,4 @@ class CompleteMeTest < Minitest::Test
   def large_word_list
     File.read("/usr/share/dict/words")
   end
-
 end
