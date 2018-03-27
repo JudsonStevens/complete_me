@@ -12,6 +12,20 @@ class CompleteMeTest < Minitest::Test
     @cm = CompleteMe.new
   end
 
+  #METHODS
+  def insert_words(words)
+    @cm.populate(words.join("\n"))
+
+  end
+
+  def medium_word_list
+    File.read('../complete_me/complete_me_spec_harness/test/medium.txt')
+  end
+
+  def large_word_list
+    File.read('/usr/share/dict/words')
+  end
+
   def test_count_starts_at_zero
     expected = 0
     assert_equal expected, @cm.count
@@ -86,20 +100,28 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, @cm.delete("act")
   end
 
-  def test_it_can_read_CSV
-    @cm.read_CSV_file
+  def test_it_can_check_inclusion_of_a_word
+
+    insert_words(["actual", "act"])
+    assert @cm.include?("actual")
+    refute @cm.include?("beowulf")
   end
 
   def test_it_can_search_addresses
     @cm.read_CSV_file
-    assert_equal '8110 E Union Ave Spc PK1043', @cm.search('8110 E Union Ave Spc PK1043')
+    assert @cm.search("8110 E Union Ave Spc PK1043")
+    assert @cm.search("8110 ")
+    @cm.select("8110", "8110 E Union Ave Spc PK1043")
+    assert_equal "8110 E Union Ave Spc PK1043", @cm.suggest("8110").first
+
+    # assert_equal "8110 E Union Ave Spc PK1043", @cm.suggest("8110 E Union Ave Spc PK104")
   end
 
-
-  #METHODS
-  def insert_words(words)
-    @cm.populate(words.join("\n"))
-
+  def test_it_can_make_mid_word_suggestions
+    insert_words(["porcupine", "hedgehog", "capybara", "ferret", "cupacabra"])
+    expected = ["cupacabra", "porcupine"]
+    actual = @cm.suggest("cup", true)
+    assert_equal expected, actual
   end
 
   def medium_word_list

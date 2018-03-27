@@ -8,6 +8,7 @@ class CompleteMe
   def initialize
     @root_node = Node.new
     @count = 0
+    @word_log = []
   end
 
   # Take each letter of the input word and ask if the node before has the same
@@ -15,7 +16,7 @@ class CompleteMe
   # final node value equal to the last letter. Once it's ran through all of the
   # characters, it sets the word_flag = true.
   def insert(word, node = @root_node)
-
+    @word_log << word
     word.each_char do |letter|
       if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
@@ -30,7 +31,7 @@ class CompleteMe
   # a child node containing that letter. Once the new_word has ran through all of the
   # characters in the supplied word, and found nodes for all of them, it returns the
   # node of the last character in the word we wanted to find. The last if statement
-  # just double checks to make sure we returned the right new_word. Possibly
+  # just double checks to make sure we returned the ria = ght new_word. Possibly
   # extraneous, discuss on Monday.
   def search(word, node = @root_node)
     new_word = word.each_char do |letter|
@@ -40,9 +41,7 @@ class CompleteMe
         return false
       end
     end
-    if new_word == word
-      return node
-    end
+    return node if new_word == word
   end
 
     # Most efficient way to count is to count insertions and lower the count on deletions.
@@ -54,28 +53,36 @@ class CompleteMe
     # The definition list in the local computer is divided by \n, allowing
     # it to be split into seperate words and then inserted.
   def populate(strings)
-    strings.split("\n").each { |word| insert(word)}
+    strings.split("\n").uniq.each { |word| insert(word)}
   end
 
   # To suggest, we need to first find the node at the end of the prefix given.
   # After that, we need to find all words that use that prefix and have a valid
   # word_flag to signify they are a word.
-  def suggest(substring, node = @root_node)
+  def suggest(substring, mid_word = false, node = @root_node )
     final_word_suggestions = []
     substring.each_char do |letter|
       if node.child_nodes.key?(letter) == true
         node = node.child_nodes[letter]
       end
     end
-    final_word_suggestions = all_words(node, substring, final_word_suggestions)
-    final_word_suggestions = sort_weighted_suggestions(substring, final_word_suggestions)
+    final_word_suggestions = find_final_word_suggestions(node, substring, final_word_suggestions, mid_word)
     return final_word_suggestions.map { |suggestion| suggestion[0] }
+  end
+
+  def find_final_word_suggestions(node, substring, final_word_suggestions, mid_word)
+    final_word_suggestions = find_all_words(node, substring, final_word_suggestions)
+    if mid_word == true
+      final_word_suggestions += dictionary_search(substring)
+      final_word_suggestions = final_word_suggestions.uniq.reverse
+    end
+    final_word_suggestions = sort_weighted_suggestions(substring, final_word_suggestions)
   end
 
   # This method takes the node from the original suggest method and then finds
   # the nodes with the word_flag set to true, returning the characters it used
   # to get to that node as a valid word suggestion.
-  def all_words(node, substring, final_word_suggestions)
+  def find_all_words(node, substring, final_word_suggestions)
     if node.word_flag == true
       final_word_suggestion_intake(substring, final_word_suggestions)
     end
@@ -91,7 +98,7 @@ class CompleteMe
         new_substring = substring
         new_substring += letter
         next_node = node.child_nodes[letter]
-        all_words(next_node, new_substring, final_word_suggestions)
+        find_all_words(next_node, new_substring, final_word_suggestions)
       end
     end
   end
@@ -196,6 +203,12 @@ class CompleteMe
       |row| column_data << row[20]
     end
     populate(column_data.join("\n"))
+  end
+
+  def dictionary_search(substring)
+    dict_search_results = []
+    dict_search_results = @word_log.grep(/#{substring}/).join(" ").split(" ")
+    return dict_search_results
   end
 
 end
