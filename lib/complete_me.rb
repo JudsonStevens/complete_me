@@ -31,13 +31,12 @@ class CompleteMe
   # just double checks to make sure we returned the ria = ght new_word. Possibly
   # extraneous, discuss on Monday.
   def search(word, node = @root_node)
-    new_word = word.each_char do |letter|
+    new_word = word.each_char { |letter|
       if node.child_nodes.has_key?(letter) == true
         node = node.child_nodes[letter]
       elsif node.child_nodes.has_key?(letter) == false
         return false
-      end
-    end
+      end }
     return node if new_word == word
   end
 
@@ -201,7 +200,6 @@ class CompleteMe
     elsif node.child_nodes.empty? == false 
       node.word_flag = false
     end 
-    # @count -= 1
   end
 
   # This method comes into play if the node we want to delete doesn't have any children. 
@@ -220,6 +218,10 @@ class CompleteMe
     last_letter = substring[-1]
     substring = substring[0...-1]
     node = search(substring)
+    actual_deletion(node, last_letter, substring)
+  end
+
+  def actual_deletion(node, last_letter, substring)
     if node.child_nodes.key?(last_letter) && node.word_flag == false
       node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
       delete(substring)
