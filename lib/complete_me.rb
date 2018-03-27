@@ -31,7 +31,7 @@ class CompleteMe
   # a child node containing that letter. Once the new_word has ran through all of the
   # characters in the supplied word, and found nodes for all of them, it returns the
   # node of the last character in the word we wanted to find. The last if statement
-  # just double checks to make sure we returned the ria = ght new_word. Possibly
+  # just double checks to make sure we returned the right new_word. Possibly
   # extraneous, discuss on Monday.
   def search(word, node = @root_node)
     new_word = word.each_char do |letter|
@@ -53,7 +53,7 @@ class CompleteMe
     # The definition list in the local computer is divided by \n, allowing
     # it to be split into seperate words and then inserted.
   def populate(strings)
-    strings.split("\n").uniq.each { |word| insert(word)}
+    strings.split("\n").uniq.each { |word| insert(word) }
   end
 
   # To suggest, we need to first find the node at the end of the prefix given.
