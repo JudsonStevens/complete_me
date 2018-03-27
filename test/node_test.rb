@@ -15,10 +15,6 @@ class NodeTest < MiniTest::Test
     assert_instance_of Node, @node
   end
 
-  def test_nothing
-    skip
-  end
-
   def test_it_initializes_with_the_correct_weight
     expected = {}
     assert_equal expected, @node.weight
