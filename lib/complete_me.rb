@@ -31,7 +31,7 @@ class CompleteMe
   # a child node containing that letter. Once the new_word has ran through all of the 
   # characters in the supplied word, and found nodes for all of them, it returns the 
   # node of the last character in the word we wanted to find. The last if statement
-  # just double checks to make sure we returned the right new_word. Possibly
+  # just double checks to make sure we returned the ria = ght new_word. Possibly
   # extraneous, discuss on Monday.
   def search(word, node = @root_node)
     new_word = word.each_char do |letter|
@@ -41,9 +41,7 @@ class CompleteMe
         return false
       end
     end
-    if new_word == word
-      return node
-    end
+    return node if new_word == word
   end
 
     # Most efficient way to count is to count insertions and lower the count on deletions.
