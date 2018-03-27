@@ -15,7 +15,6 @@ class CompleteMeTest < Minitest::Test
   #METHODS
   def insert_words(words)
     @cm.populate(words.join("\n"))
-
   end
 
   def medium_word_list
@@ -94,7 +93,7 @@ class CompleteMeTest < Minitest::Test
     assert @cm.include?('act')
   end
 
-  def test_count_can_go_down
+  def test_include_finds_a_word
     insert_words(["porcupine", "hedgehog", "capybara", "ferret"])
     assert @cm.include?("hedgehog")
   end
@@ -139,14 +138,5 @@ class CompleteMeTest < Minitest::Test
     expected = ['cupacabra', 'porcupine']
     actual = @cm.suggest("cup", true)
     assert_equal expected, actual
-  end
-
-
-  def medium_word_list
-    File.read('../complete_me/complete_me_spec_harness/test/medium.txt')
-  end
-
-  def large_word_list
-    File.read('/usr/share/dict/words')
   end
 end

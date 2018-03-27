@@ -7,7 +7,6 @@ class CompleteMe
 
   def initialize
     @root_node = Node.new
-    @count = 0
     @word_log = []
   end
 
@@ -17,14 +16,12 @@ class CompleteMe
   # characters, it sets the word_flag = true.
   def insert(word, node = @root_node)
     @word_log << word
-    word.each_char do |letter|
+    word.each_char { |letter|
       if node.child_nodes.has_key?(letter) == false
         node.child_nodes[letter] = Node.new
       end
-      node = node.child_nodes[letter]
-    end
+      node = node.child_nodes[letter] }
     node.word_flag = true
-    @count += 1
   end
 
   # Take in an argument and then strip it down and check each node to see if it has
@@ -34,21 +31,45 @@ class CompleteMe
   # just double checks to make sure we returned the ria = ght new_word. Possibly
   # extraneous, discuss on Monday.
   def search(word, node = @root_node)
-    new_word = word.each_char do |letter|
+    new_word = word.each_char { |letter|
       if node.child_nodes.has_key?(letter) == true
         node = node.child_nodes[letter]
       elsif node.child_nodes.has_key?(letter) == false
         return false
-      end
-    end
+      end }
     return node if new_word == word
   end
 
-    # Most efficient way to count is to count insertions and lower the count on deletions.
-    # This method will return the count.
-  def count
+  # This method will be used to count the existing words in the trie. We
+  # set the instance variable @count equal to zero to start, then move to
+  # the actual_count method.
+  def count(node = @root_node)
+    @count = 0
+    actual_count(node)
+  end
+
+  # This method asks if the child nodes of that node are not empty. If they
+  # are not, then we take each child node and perform the count_conditionals
+  # method, which will increase the count if there is a word_flag that is set
+  # to true among the child nodes.
+  def actual_count(node = @root_node)
+    if node.child_nodes.empty? == false
+      node.child_nodes.each_key do |letter|
+        count_conditionals(node, letter)
+      end
+    end
     return @count
   end
+
+  def count_conditionals(node, letter)
+    if node.child_nodes[letter].word_flag == true
+      @count += 1
+      actual_count(node.child_nodes[letter])
+    elsif node.child_nodes[letter].word_flag == false
+      actual_count(node.child_nodes[letter])
+    end
+  end
+
 
     # The definition list in the local computer is divided by \n, allowing
     # it to be split into seperate words and then inserted.
@@ -95,12 +116,16 @@ class CompleteMe
   def suggestion_search(node, substring, final_word_suggestions)
     node.child_nodes.each_key do |letter|
       if node.child_nodes.key?(letter)
-        new_substring = substring
-        new_substring += letter
-        next_node = node.child_nodes[letter]
-        find_all_words(next_node, new_substring, final_word_suggestions)
+        recursive_suggestion_search(node, letter, substring, final_word_suggestions)
       end
     end
+  end
+
+  def recursive_suggestion_search(node, letter, substring, final_word_suggestions)
+    new_substring = substring
+    new_substring += letter
+    next_node = node.child_nodes[letter]
+    find_all_words(next_node, new_substring, final_word_suggestions)
   end
 
   def final_word_suggestion_intake(substring, final_word_suggestions)
@@ -131,12 +156,17 @@ class CompleteMe
   def sort_weighted_suggestions(substring, final_word_suggestion)
     weighted_suggestions = []
     final_word_suggestion.map do |word|
-      node = search(word)
-      node.weight[substring] = 0 if node.weight[substring] == nil
-      weighted_suggestions << [word, node.weight[substring]]
+      addition_to_weighted_suggestions(word, substring, weighted_suggestions)
     end
     sorted_word_suggestions = sort_into_correct_order(weighted_suggestions)
     return sorted_word_suggestions
+  end
+
+  def addition_to_weighted_suggestions(word, substring, weighted_suggestions)
+    node = search(word)
+    node.weight[substring] = 0 if node.weight[substring] == nil
+    weighted_suggestions << [word, node.weight[substring]]
+    return weighted_suggestions
   end
 
   def sort_into_correct_order(weighted_suggestions)
@@ -169,8 +199,7 @@ class CompleteMe
       delete_and_move_to_previous_node(substring)
     elsif node.child_nodes.empty? == false
       node.word_flag = false
-    end
-    @count -= 1
+    end 
   end
 
   # This method comes into play if the node we want to delete doesn't have any children.
@@ -189,6 +218,10 @@ class CompleteMe
     last_letter = substring[-1]
     substring = substring[0...-1]
     node = search(substring)
+    actual_deletion(node, last_letter, substring)
+  end
+
+  def actual_deletion(node, last_letter, substring)
     if node.child_nodes.key?(last_letter) && node.word_flag == false
       node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter) }
       delete(substring)
@@ -210,5 +243,4 @@ class CompleteMe
     dict_search_results = @word_log.grep(/#{substring}/).join(" ").split(" ")
     return dict_search_results
   end
-
 end
