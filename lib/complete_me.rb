@@ -44,19 +44,30 @@ class CompleteMe
 
     # Most efficient way to count is to count insertions and lower the count on deletions.
     # This method will return the count.
+
   def count(node = @root_node)
-    node.child_nodes.each_key do |letter|
-      if node.child_nodes[letter].word_flag == true
-        @count += 1
-        count(node.child_nodes[letter])
-      elsif node.child_nodes[letter].word_flag == false
-        count(node.child_nodes[letter])
-      elsif node.child_nodes.empty?
-        break
+    @count = 0
+    count_method(node)
+  end
+
+  def count_method(node = @root_node)
+    if node.child_nodes.empty? == false
+      node.child_nodes.each_key do |letter|
+        count_conditionals(node, letter)
       end
     end
     return @count
   end
+
+  def count_conditionals(node, letter)
+    if node.child_nodes[letter].word_flag == true
+      @count += 1
+      count_method(node.child_nodes[letter])
+    elsif node.child_nodes[letter].word_flag == false
+      count_method(node.child_nodes[letter])
+    end
+  end
+
 
     # The definition list in the local computer is divided by \n, allowing
     # it to be split into seperate words and then inserted.
