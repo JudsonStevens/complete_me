@@ -95,9 +95,11 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_count_can_go_down
-    insert_words(['actual", "act'])
+    insert_words(["actual", "act"])
     expected = 1
-    assert_equal expected, @cm.delete('act')
+    assert_equal 2, @cm.count
+    @cm.delete('act')
+    assert_equal expected, @cm.count
   end
 
   def test_it_can_check_inclusion_of_a_word
