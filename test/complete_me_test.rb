@@ -90,18 +90,9 @@ class CompleteMeTest < Minitest::Test
     @cm.read_CSV_file
   end
 
-  def test_it_inserts_the_CSV_list_correctly
+  def test_it_can_search_addresses
     @cm.read_CSV_file
-    assert @cm.search("8110 E Union Ave Spc PK1043")
-    assert @cm.search("8110 ")
-    @cm.select("8110", "8110 E Union Ave Spc PK1043")
-    assert_equal "8110 E Union Ave Spc PK1043", @cm.suggest("8110").first
-
-    assert_equal "8110 E Union Ave Spc PK1043", @cm.suggest("8110 E Union Ave Spc PK104")
-  end
-
-  def test_it_selects_address
-
+    assert_equal '8110 E Union Ave Spc PK1043', @cm.search('8110 E Union Ave Spc PK1043')
   end
 
 

@@ -198,8 +198,4 @@ class CompleteMe
     populate(column_data.join("\n"))
   end
 
-  def dictionary_search
-
-  end
-
 end
