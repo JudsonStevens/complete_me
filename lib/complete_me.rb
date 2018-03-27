@@ -190,16 +190,18 @@ class CompleteMe
     substring = substring[0...-1]
     node = search(substring)
     if node.child_nodes.key?(last_letter) && node.word_flag == false
-      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
+      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter) }
       delete(substring)
     elsif node.child_nodes.key?(last_letter) && node.word_flag == true
-      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter)}
+      node.child_nodes = node.child_nodes.dup.tap { |hash| hash.delete(last_letter) }
     end
   end
 
   def read_CSV_file
     column_data = []
-    csv = CSV.foreach('addresses.csv') { |row| column_data << row[20] }
+    csv = CSV.foreach('addresses.csv') do
+      |row| column_data << row[20]
+    end
     populate(column_data.join("\n"))
   end
 
@@ -208,4 +210,5 @@ class CompleteMe
     dict_search_results = @word_log.grep(/#{substring}/).join(" ").split(" ")
     return dict_search_results
   end
+
 end
