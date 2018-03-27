@@ -7,7 +7,6 @@ class CompleteMe
 
   def initialize
     @root_node = Node.new
-    @count = 0
     @word_log = []
   end
 
@@ -42,15 +41,19 @@ class CompleteMe
     return node if new_word == word
   end
 
-    # Most efficient way to count is to count insertions and lower the count on deletions.
-    # This method will return the count.
-
+  # This method will be used to count the existing words in the trie. We
+  # set the instance variable @count equal to zero to start, then move to
+  # the actual_count method.
   def count(node = @root_node)
     @count = 0
-    count_method(node)
+    actual_count(node)
   end
 
-  def count_method(node = @root_node)
+  # This method asks if the child nodes of that node are not empty. If they
+  # are not, then we take each child node and perform the count_conditionals
+  # method, which will increase the count if there is a word_flag that is set
+  # to true among the child nodes.
+  def actual_count(node = @root_node)
     if node.child_nodes.empty? == false
       node.child_nodes.each_key do |letter|
         count_conditionals(node, letter)
@@ -62,9 +65,9 @@ class CompleteMe
   def count_conditionals(node, letter)
     if node.child_nodes[letter].word_flag == true
       @count += 1
-      count_method(node.child_nodes[letter])
+      actual_count(node.child_nodes[letter])
     elsif node.child_nodes[letter].word_flag == false
-      count_method(node.child_nodes[letter])
+      actual_count(node.child_nodes[letter])
     end
   end
 
