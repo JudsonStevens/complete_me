@@ -117,12 +117,16 @@ class CompleteMe
   def suggestion_search(node, substring, final_word_suggestions)
     node.child_nodes.each_key do |letter|
       if node.child_nodes.key?(letter)
-        new_substring = substring
-        new_substring += letter
-        next_node = node.child_nodes[letter]
-        find_all_words(next_node, new_substring, final_word_suggestions)
+        recursive_suggestion_search(node, letter, substring, final_word_suggestions)
       end
     end
+  end
+
+  def recursive_suggestion_search(node, letter, substring, final_word_suggestions)
+    new_substring = substring
+    new_substring += letter
+    next_node = node.child_nodes[letter]
+    find_all_words(next_node, new_substring, final_word_suggestions)
   end
 
   def final_word_suggestion_intake(substring, final_word_suggestions)
@@ -153,12 +157,17 @@ class CompleteMe
   def sort_weighted_suggestions(substring, final_word_suggestion)
     weighted_suggestions = []
     final_word_suggestion.map do |word|
-      node = search(word)
-      node.weight[substring] = 0 if node.weight[substring] == nil
-      weighted_suggestions << [word, node.weight[substring]]
+      addition_to_weighted_suggestions(word, substring, weighted_suggestions)
     end
     sorted_word_suggestions = sort_into_correct_order(weighted_suggestions)
     return sorted_word_suggestions
+  end
+
+  def addition_to_weighted_suggestions(word, substring, weighted_suggestions)
+    node = search(word)
+    node.weight[substring] = 0 if node.weight[substring] == nil
+    weighted_suggestions << [word, node.weight[substring]]
+    return weighted_suggestions
   end
 
   def sort_into_correct_order(weighted_suggestions)
