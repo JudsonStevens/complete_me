@@ -31,12 +31,12 @@ class CompleteMe
   # just double checks to make sure we returned the right new_word. Possibly
   # extraneous, discuss on Monday.
   def search(word, node = @root_node)
-    new_word = word.each_char { |letter|
+    new_word = word.each_char do |letter|
       if node.child_nodes.has_key?(letter) == true
         node = node.child_nodes[letter]
-      elsif node.child_nodes.has_key?(letter) == false
-        return false
-      end }
+      else return false
+      end 
+    end
     return node if new_word == word
   end
 
@@ -70,9 +70,8 @@ class CompleteMe
     end
   end
 
-
-    # The definition list in the local computer is divided by \n, allowing
-    # it to be split into seperate words and then inserted.
+  # The definition list in the local computer is divided by \n, allowing
+  # it to be split into seperate words and then inserted.
   def populate(strings)
     strings.split("\n").uniq.each { |word| insert(word) }
   end
@@ -81,56 +80,54 @@ class CompleteMe
   # After that, we need to find all words that use that prefix and have a valid
   # word_flag to signify they are a word.
   def suggest(substring, mid_word = false, node = @root_node )
-    final_word_suggestions = []
+    final_word_sugg = []
     substring.each_char do |letter|
-      if node.child_nodes.key?(letter) == true
-        node = node.child_nodes[letter]
-      end
+      node = node.child_nodes[letter] if node.child_nodes.key?(letter) == true
     end
-    final_word_suggestions = find_final_word_suggestions(node, substring, final_word_suggestions, mid_word)
-    return final_word_suggestions.map { |suggestion| suggestion[0] }
+    final_word_sugg = find_final_word_sugg(node, substring, final_word_sugg, mid_word)
+    return final_word_sugg.map { |suggestion| suggestion[0] }
   end
 
-  def find_final_word_suggestions(node, substring, final_word_suggestions, mid_word)
-    final_word_suggestions = find_all_words(node, substring, final_word_suggestions)
+  def find_final_word_sugg(node, substring, final_word_sugg, mid_word)
+    final_word_sugg = find_all_words(node, substring, final_word_sugg)
     if mid_word == true
-      final_word_suggestions += dictionary_search(substring)
-      final_word_suggestions = final_word_suggestions.uniq.reverse
+      final_word_sugg += dictionary_search(substring)
+      final_word_sugg = final_word_sugg.uniq.reverse
     end
-    final_word_suggestions = sort_weighted_suggestions(substring, final_word_suggestions)
+    final_word_sugg = sort_weighted_suggestions(substring, final_word_sugg)
   end
 
   # This method takes the node from the original suggest method and then finds
   # the nodes with the word_flag set to true, returning the characters it used
   # to get to that node as a valid word suggestion.
-  def find_all_words(node, substring, final_word_suggestions)
+  def find_all_words(node, substring, final_word_sugg)
     if node.word_flag == true
-      final_word_suggestion_intake(substring, final_word_suggestions)
+      final_word_suggestion_intake(substring, final_word_sugg)
     end
     if node.child_nodes.empty? == false
-      suggestion_search(node, substring, final_word_suggestions)
+      suggestion_search(node, substring, final_word_sugg)
     end
-    return final_word_suggestions
+    return final_word_sugg
   end
 
-  def suggestion_search(node, substring, final_word_suggestions)
+  def suggestion_search(node, substring, final_word_sugg)
     node.child_nodes.each_key do |letter|
       if node.child_nodes.key?(letter)
-        recursive_suggestion_search(node, letter, substring, final_word_suggestions)
+        recursive_suggestion_search(node, letter, substring, final_word_sugg)
       end
     end
   end
 
-  def recursive_suggestion_search(node, letter, substring, final_word_suggestions)
+  def recursive_suggestion_search(node, letter, substring, final_word_sugg)
     new_substring = substring
     new_substring += letter
     next_node = node.child_nodes[letter]
-    find_all_words(next_node, new_substring, final_word_suggestions)
+    find_all_words(next_node, new_substring, final_word_sugg)
   end
 
-  def final_word_suggestion_intake(substring, final_word_suggestions)
-    final_word_suggestions << substring
-    final_word_suggestions = final_word_suggestions.uniq
+  def final_word_suggestion_intake(substring, final_word_sugg)
+    final_word_sugg << substring
+    final_word_sugg = final_word_sugg.uniq
   end
 
   # Take in the substring and the suggestion, and weight the word picked,
