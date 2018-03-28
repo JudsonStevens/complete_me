@@ -70,7 +70,6 @@ class CompleteMe
     end
   end
 
-
     # The definition list in the local computer is divided by \n, allowing
     # it to be split into seperate words and then inserted.
   def populate(strings)
@@ -94,7 +93,10 @@ class CompleteMe
   def find_final_word_suggestions(node, substring, final_word_suggestions, mid_word)
     final_word_suggestions = find_all_words(node, substring, final_word_suggestions)
     if mid_word == true  
-      final_word_suggestions += dictionary_search(substring)
+      complete_word = String.new
+      mid_word_suggestions = []
+      final_word_suggestions += trie_mid_word_suggest(substring, @root_node, complete_word, mid_word_suggestions)
+      # dictionary_search(substring)
       final_word_suggestions = final_word_suggestions.uniq.reverse
     end
     final_word_suggestions = sort_weighted_suggestions(substring, final_word_suggestions)
@@ -164,6 +166,7 @@ class CompleteMe
 
   def addition_to_weighted_suggestions(word, substring, weighted_suggestions)
     node = search(word)
+    require 'pry'; binding.pry
     node.weight[substring] = 0 if node.weight[substring] == nil
     weighted_suggestions << [word, node.weight[substring]]
     return weighted_suggestions
@@ -240,5 +243,27 @@ class CompleteMe
     dict_search_results = []
     dict_search_results = @word_log.grep(/#{substring}/).join(" ").split(" ")
     return dict_search_results
+  end
+
+  def trie_mid_word_suggest(substring, node = @root_node, complete_word, mid_word_suggestions)
+    # require 'pry'; binding.pry
+    node.child_nodes.each_key do |letter|
+      # require 'pry'; binding.pry
+      complete_word << letter
+      # require 'pry'; binding.pry
+      if node.child_nodes[letter].word_flag && complete_word.include?(substring)
+        substring = complete_word
+        require 'pry'; binding.pry
+        mid_word_suggestions << suggest(substring)
+      elsif !node.child_nodes[letter].word_flag && !node.child_nodes.empty?
+        trie_mid_word_suggest(substring, node.child_nodes[letter], complete_word, mid_word_suggestions)
+      elsif !node.child_nodes[letter].word_flag && !complete_word.include?(substring)
+        complete
+        break
+      end
+    end
+    require 'pry'; binding.pry
+    complete_word = String.new
+    return mid_word_suggestions
   end
 end
