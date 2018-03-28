@@ -31,10 +31,10 @@ class CompleteMe
   # just double checks to make sure we returned the ria = ght new_word. Possibly
   # extraneous, discuss on Monday.
   def search(word, node = @root_node)
-    new_word = word.each_char { |letter|
+    new_word = word.each_char do |letter|
       if node.child_nodes.has_key?(letter) == true
         node = node.child_nodes[letter]
-      return false elsif node.child_nodes.has_key?(letter) == false
+      false elsif node.child_nodes.has_key?(letter) == false
       end
     end
     return node if new_word == word
@@ -247,12 +247,13 @@ class CompleteMe
 
   def trie_mid_word_suggest(substring, node = @root_node, complete_word, mid_word_suggestions)
     node.child_nodes.each_key do |letter|
-      if node.child_nodes[letter].word_flag && complete_word.include?(substring)
+      complete_word << letter
+      require 'pry'; binding.pry
+      if complete_word.include?(substring)
         word = []
         word << complete_word
-        mid_word_suggestions << sort_weighted_suggestions(substring, word)
-      elsif !node.child_nodes[letter].word_flag && !node.child_nodes.empty?
-        complete_word << letter
+        find_all_words(node, substring, word)
+      elsif !node.child_nodes[letter].word_flag && !node.child_nodes.empty? && complete_word.include?(substring) == false
         trie_mid_word_suggest(substring, node.child_nodes[letter], complete_word, mid_word_suggestions)
       end
     end
