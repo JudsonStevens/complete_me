@@ -92,10 +92,9 @@ class CompleteMe
 
   def find_final_word_suggestions(node, substring, final_word_suggestions, mid_word)
     final_word_suggestions = find_all_words(node, substring, final_word_suggestions)
-    if mid_word == true  
-      complete_word = String.new
+    if mid_word == true
       mid_word_suggestions = []
-      final_word_suggestions += trie_mid_word_suggest(substring, @root_node, complete_word, mid_word_suggestions)
+      final_word_suggestions += trie_mid_word_suggest(substring, @root_node, mid_word_suggestions)
       # dictionary_search(substring)
       final_word_suggestions = final_word_suggestions.uniq.reverse
     end
@@ -245,26 +244,31 @@ class CompleteMe
     return dict_search_results
   end
 
-  def trie_mid_word_suggest(substring, node = @root_node, complete_word, mid_word_suggestions)
+  def trie_mid_word_suggest(substring, node = @root_node, mid_word_suggestions)
+    mid_word_answers = []
     node.child_nodes.each_key do |letter|
-      continue_trie_search_now(substring, node, complete_word, mid_word_suggestions, letter)
-    return mid_word_suggestions
-  end
-
-  def continue_trie_search_now(substring, node, complete_word, mid_word_suggestions, letter)
-    complete_word << letter
-      # require 'pry'; binding.pry
-      if complete_word.include?(substring)
-        word = []
-        word << complete_word
-        complete_word = ""
-        find_all_words(node, substring, word)
-      elsif !node.child_nodes.empty? && complete_word.include?(substring) == false
-        continue_trie_search(substring, complete_word, mid_word_suggestions)
-      else node.child_nodes.empty?
-        complete_word = ""
+      mid_word_suggestions = find_all_words(node, letter, mid_word_suggestions)
+      mid_word_suggestions.select do |word|
+        if word.include?(substring)
+          mid_word_answers << word
+        end
       end
     end
-    return mid_word_suggestions
+    return mid_word_answers
   end
+
+  # def continue(substring, node, complete_word, mid_word_suggestions, letter)
+  #   complete_word << letter
+  #     if complete_word.include?(substring)
+  #       word = []
+  #       word << complete_word
+  #       complete_word = ""
+  #       find_all_words(node, substring, word)
+  #     elsif !node.child_nodes.empty? && complete_word.include?(substring) == false
+  #       continue(substring, node, complete_word, mid_word_suggestions, letter)
+  #     else node.child_nodes.empty?
+  #       complete_word = ""
+  #     end
+  #   return mid_word_suggestions
+  # end
 end
