@@ -34,9 +34,9 @@ class CompleteMe
     new_word = word.each_char { |letter|
       if node.child_nodes.has_key?(letter) == true
         node = node.child_nodes[letter]
-      elsif node.child_nodes.has_key?(letter) == false
-        return false
-      end }
+      return false elsif node.child_nodes.has_key?(letter) == false
+      end
+    end
     return node if new_word == word
   end
 
@@ -246,24 +246,16 @@ class CompleteMe
   end
 
   def trie_mid_word_suggest(substring, node = @root_node, complete_word, mid_word_suggestions)
-    # require 'pry'; binding.pry
     node.child_nodes.each_key do |letter|
-      # require 'pry'; binding.pry
-      complete_word << letter
-      # require 'pry'; binding.pry
       if node.child_nodes[letter].word_flag && complete_word.include?(substring)
-        substring = complete_word
-        require 'pry'; binding.pry
-        mid_word_suggestions << suggest(substring)
+        word = []
+        word << complete_word
+        mid_word_suggestions << sort_weighted_suggestions(substring, word)
       elsif !node.child_nodes[letter].word_flag && !node.child_nodes.empty?
+        complete_word << letter
         trie_mid_word_suggest(substring, node.child_nodes[letter], complete_word, mid_word_suggestions)
-      elsif !node.child_nodes[letter].word_flag && !complete_word.include?(substring)
-        complete
-        break
       end
     end
-    require 'pry'; binding.pry
-    complete_word = String.new
     return mid_word_suggestions
   end
 end
