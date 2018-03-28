@@ -247,14 +247,22 @@ class CompleteMe
 
   def trie_mid_word_suggest(substring, node = @root_node, complete_word, mid_word_suggestions)
     node.child_nodes.each_key do |letter|
-      complete_word << letter
-      require 'pry'; binding.pry
+      continue_trie_search_now(substring, node, complete_word, mid_word_suggestions, letter)
+    return mid_word_suggestions
+  end
+
+  def continue_trie_search_now(substring, node, complete_word, mid_word_suggestions, letter)
+    complete_word << letter
+      # require 'pry'; binding.pry
       if complete_word.include?(substring)
         word = []
         word << complete_word
+        complete_word = ""
         find_all_words(node, substring, word)
-      elsif !node.child_nodes[letter].word_flag && !node.child_nodes.empty? && complete_word.include?(substring) == false
-        trie_mid_word_suggest(substring, node.child_nodes[letter], complete_word, mid_word_suggestions)
+      elsif !node.child_nodes.empty? && complete_word.include?(substring) == false
+        continue_trie_search(substring, complete_word, mid_word_suggestions)
+      else node.child_nodes.empty?
+        complete_word = ""
       end
     end
     return mid_word_suggestions
